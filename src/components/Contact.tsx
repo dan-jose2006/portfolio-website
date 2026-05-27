@@ -4,6 +4,7 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { Mail, ArrowUpRight } from "lucide-react";
 import { FaLinkedin, FaGithub } from "react-icons/fa";
+import { usePerformance } from "@/context/PerformanceContext";
 
 const CONTACT_LINKS = [
   {
@@ -31,6 +32,8 @@ const CONTACT_LINKS = [
 
 export default function Contact() {
   const [hoveredIdx, setHoveredIdx] = useState<number | null>(null);
+  const { tier } = usePerformance();
+  const isLowEnd = tier === "low";
 
   return (
     <section id="contact" className="relative z-20 bg-[#121212] pt-32 pb-24 px-6 md:px-12 lg:px-24 border-t border-white/5">
@@ -51,11 +54,11 @@ export default function Contact() {
           </p>
           <motion.a 
             href="mailto:dan.abraham1602@gmail.com" 
-            whileHover={{ scale: 1.05 }}
+            whileHover={isLowEnd ? {} : { scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             transition={{ type: "spring", bounce: 0.25, duration: 0.6 }}
-            className="inline-flex items-center justify-center px-10 py-5 font-bold text-white rounded-full uppercase tracking-widest text-sm shadow-[0_0_20px_rgba(255,255,255,0.05)] hover:shadow-[0_0_30px_rgba(255,255,255,0.2)]"
-            style={{
+            className={`inline-flex items-center justify-center px-10 py-5 font-bold text-white rounded-full uppercase tracking-widest text-sm ${isLowEnd ? 'bg-[#333]' : 'shadow-[0_0_20px_rgba(255,255,255,0.05)] hover:shadow-[0_0_30px_rgba(255,255,255,0.2)]'}`}
+            style={isLowEnd ? {} : {
               background: "linear-gradient(135deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0.02) 100%)",
               backdropFilter: "blur(12px)",
               WebkitBackdropFilter: "blur(12px)",
@@ -63,7 +66,7 @@ export default function Contact() {
               border: "1px solid rgba(255,255,255,0.2)",
             }}
           >
-            <span className="mix-blend-screen">Say Hello</span>
+            <span className={isLowEnd ? '' : 'mix-blend-screen'}>Say Hello</span>
           </motion.a>
         </motion.div>
 
@@ -87,29 +90,29 @@ export default function Contact() {
               {hoveredIdx === idx && (
                 <motion.span
                   layoutId="contact-hover-droplet"
-                  className="absolute inset-0 rounded-3xl -z-10"
-                  style={{
+                  className={`absolute inset-0 rounded-3xl -z-10 ${isLowEnd ? 'bg-white/10' : ''}`}
+                  style={isLowEnd ? {} : {
                     background: "linear-gradient(135deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0.02) 100%)",
                     backdropFilter: "blur(16px)",
                     WebkitBackdropFilter: "blur(16px)",
                     boxShadow: "inset 0px 2px 4px rgba(255,255,255,0.3), inset 0px -4px 8px rgba(0,0,0,0.1), 0px 8px 24px rgba(0,0,0,0.4)",
                     border: "1px solid rgba(255,255,255,0.1)",
                   }}
-                  transition={{ type: "spring", bounce: 0.25, duration: 0.6 }}
+                  transition={isLowEnd ? { duration: 0.2 } : { type: "spring", bounce: 0.25, duration: 0.6 }}
                 />
               )}
               
               {/* Default background */}
-              <div className={`absolute inset-0 bg-white/5 border border-white/10 rounded-3xl -z-20 transition-opacity duration-500 ${hoveredIdx === idx ? 'opacity-0' : 'opacity-100'}`} />
+              <div className={`absolute inset-0 border border-white/10 rounded-3xl -z-20 transition-opacity duration-500 ${isLowEnd ? 'bg-[#222]' : 'bg-white/5'} ${hoveredIdx === idx ? 'opacity-0' : 'opacity-100'}`} />
 
-              <div className="flex items-center gap-6 mix-blend-screen">
+              <div className={`flex items-center gap-6 ${isLowEnd ? '' : 'mix-blend-screen'}`}>
                 {link.icon}
                 <div>
                   <p className="text-sm text-white/50 uppercase tracking-widest mb-1 group-hover:text-white/70 transition-colors">{link.label}</p>
                   <p className="text-lg md:text-xl text-white font-medium">{link.value}</p>
                 </div>
               </div>
-              <ArrowUpRight className="w-6 h-6 text-white/50 group-hover:text-white group-hover:translate-x-1 group-hover:-translate-y-1 transition-all mix-blend-screen" />
+              <ArrowUpRight className={`w-6 h-6 text-white/50 group-hover:text-white group-hover:translate-x-1 group-hover:-translate-y-1 transition-all ${isLowEnd ? '' : 'mix-blend-screen'}`} />
             </a>
           ))}
         </motion.div>

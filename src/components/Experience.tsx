@@ -2,12 +2,16 @@
 
 import { motion } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
+import { usePerformance } from "@/context/PerformanceContext";
 
 interface ExperienceProps {
   onShowCertificate: () => void;
 }
 
 export default function Experience({ onShowCertificate }: ExperienceProps) {
+  const { tier } = usePerformance();
+  const isLowEnd = tier === "low";
+
   return (
     <section id="experience" className="relative z-20 bg-[#121212] pt-32 pb-16 px-6 md:px-12 lg:px-24">
       <div className="max-w-7xl mx-auto flex flex-col md:flex-row gap-16 items-start">
@@ -35,16 +39,18 @@ export default function Experience({ onShowCertificate }: ExperienceProps) {
           className="md:w-2/3 flex flex-col gap-8 w-full"
         >
           <motion.div 
-            whileHover={{ scale: 1.02 }}
+            whileHover={isLowEnd ? {} : { scale: 1.02 }}
             transition={{ type: "spring", bounce: 0.25, duration: 0.6 }}
-            className="relative bg-white/5 border border-white/10 rounded-[2rem] p-8 md:p-12 backdrop-blur-md transition-colors duration-500 group overflow-hidden"
+            className={`relative border border-white/10 rounded-[2rem] p-8 md:p-12 transition-colors duration-500 group overflow-hidden ${isLowEnd ? 'bg-[#222]' : 'bg-white/5 backdrop-blur-md'}`}
           >
             {/* Subtle liquid highlight that appears on hover for the card itself */}
-            <div className="absolute inset-0 bg-gradient-to-br from-white/[0.07] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
+            {!isLowEnd && (
+              <div className="absolute inset-0 bg-gradient-to-br from-white/[0.07] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
+            )}
 
             <div className="relative z-10 flex flex-col md:flex-row justify-between md:items-center gap-4 mb-8">
               <div>
-                <h4 className="text-3xl font-bold text-white mb-2 tracking-tight group-hover:drop-shadow-lg transition-all">AI/ML Internship</h4>
+                <h4 className={`text-3xl font-bold text-white mb-2 tracking-tight transition-all ${isLowEnd ? '' : 'group-hover:drop-shadow-lg'}`}>AI/ML Internship</h4>
                 <p className="text-xl text-emerald-400 font-medium">Larsen & Toubro EduTech</p>
               </div>
               <div className="text-white/60 text-sm font-mono bg-black/40 px-5 py-2.5 rounded-full inline-block border border-white/5 shadow-inner">
@@ -58,11 +64,11 @@ export default function Experience({ onShowCertificate }: ExperienceProps) {
 
             <motion.button 
               onClick={onShowCertificate}
-              whileHover={{ scale: 1.05 }}
+              whileHover={isLowEnd ? {} : { scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               transition={{ type: "spring", bounce: 0.25, duration: 0.6 }}
-              className="relative z-10 inline-flex items-center gap-3 px-8 py-4 text-white font-bold tracking-wide rounded-full overflow-hidden group shadow-[0_0_20px_rgba(255,255,255,0.05)] hover:shadow-[0_0_30px_rgba(255,255,255,0.2)]"
-              style={{
+              className={`relative z-10 inline-flex items-center gap-3 px-8 py-4 text-white font-bold tracking-wide rounded-full overflow-hidden group ${isLowEnd ? 'bg-[#444]' : 'shadow-[0_0_20px_rgba(255,255,255,0.05)] hover:shadow-[0_0_30px_rgba(255,255,255,0.2)]'}`}
+              style={isLowEnd ? {} : {
                 background: "linear-gradient(135deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0.02) 100%)",
                 backdropFilter: "blur(12px)",
                 WebkitBackdropFilter: "blur(12px)",
@@ -70,7 +76,7 @@ export default function Experience({ onShowCertificate }: ExperienceProps) {
                 border: "1px solid rgba(255,255,255,0.2)",
               }}
             >
-              <span className="mix-blend-screen flex items-center gap-3">
+              <span className={`flex items-center gap-3 ${isLowEnd ? '' : 'mix-blend-screen'}`}>
                 Show Certificate
                 <ArrowUpRight className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1" />
               </span>

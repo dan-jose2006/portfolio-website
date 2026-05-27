@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
+import { usePerformance } from "@/context/PerformanceContext";
 
 const SKILLS = [
   { category: "Languages", items: ["Python", "TypeScript", "C++", "SQL"] },
@@ -12,6 +13,8 @@ const SKILLS = [
 
 export default function Skills() {
   const [hoveredIdx, setHoveredIdx] = useState<number | null>(null);
+  const { tier } = usePerformance();
+  const isLowEnd = tier === "low";
 
   return (
     <section id="skills" className="relative z-20 bg-[#121212] pt-24 pb-32 px-6 md:px-12 lg:px-24">
@@ -45,27 +48,27 @@ export default function Skills() {
               {hoveredIdx === idx && (
                 <motion.span
                   layoutId="skills-hover-droplet"
-                  className="absolute inset-0 rounded-3xl -z-10"
-                  style={{
+                  className={`absolute inset-0 rounded-3xl -z-10 ${isLowEnd ? 'bg-white/10' : ''}`}
+                  style={isLowEnd ? {} : {
                     background: "linear-gradient(135deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0.02) 100%)",
                     backdropFilter: "blur(16px)",
                     WebkitBackdropFilter: "blur(16px)",
                     boxShadow: "inset 0px 2px 4px rgba(255,255,255,0.3), inset 0px -4px 8px rgba(0,0,0,0.1), 0px 8px 24px rgba(0,0,0,0.4)",
                     border: "1px solid rgba(255,255,255,0.1)",
                   }}
-                  transition={{ type: "spring", bounce: 0.25, duration: 0.6 }}
+                  transition={isLowEnd ? { duration: 0.2 } : { type: "spring", bounce: 0.25, duration: 0.6 }}
                 />
               )}
               
               {/* Default background that fades out when the fluid glass droplet slides behind it */}
-              <div className={`absolute inset-0 bg-white/5 border border-white/10 rounded-3xl -z-20 transition-opacity duration-500 ${hoveredIdx === idx ? 'opacity-0' : 'opacity-100'}`} />
+              <div className={`absolute inset-0 border border-white/10 rounded-3xl -z-20 transition-opacity duration-500 ${isLowEnd ? 'bg-[#222]' : 'bg-white/5'} ${hoveredIdx === idx ? 'opacity-0' : 'opacity-100'}`} />
 
-              <h4 className="text-2xl font-semibold text-emerald-400 mb-8 group-hover:text-white transition-colors duration-500 drop-shadow-md">{skillGroup.category}</h4>
+              <h4 className={`text-2xl font-semibold text-emerald-400 mb-8 group-hover:text-white transition-colors duration-500 ${isLowEnd ? '' : 'drop-shadow-md'}`}>{skillGroup.category}</h4>
               <ul className="flex flex-col gap-5">
                 {skillGroup.items.map((item) => (
                   <li key={item} className="text-white/80 font-medium flex items-center gap-4 group-hover:text-white transition-colors duration-500 text-lg">
-                    <span className="w-1.5 h-1.5 rounded-full bg-blue-400 group-hover:bg-emerald-400 group-hover:scale-150 group-hover:shadow-[0_0_10px_#34d399] transition-all duration-500" />
-                    <span className="group-hover:mix-blend-screen">{item}</span>
+                    <span className={`w-1.5 h-1.5 rounded-full bg-blue-400 group-hover:bg-emerald-400 group-hover:scale-150 transition-all duration-500 ${isLowEnd ? '' : 'group-hover:shadow-[0_0_10px_#34d399]'}`} />
+                    <span className={isLowEnd ? '' : 'group-hover:mix-blend-screen'}>{item}</span>
                   </li>
                 ))}
               </ul>

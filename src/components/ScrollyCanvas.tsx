@@ -2,6 +2,7 @@
 
 import { useRef, useEffect, useState } from "react";
 import { useScroll, useTransform, useMotionValueEvent, motion, AnimatePresence } from "framer-motion";
+import { usePerformance } from "@/context/PerformanceContext";
 
 const FRAME_COUNT = 120;
 // Maps to the padded frame format: frame_000_delay-0.066s.jpg
@@ -45,6 +46,8 @@ export default function ScrollyCanvas() {
     }, 0);
   }, []);
 
+  const { tier, isMobile } = usePerformance();
+
   const lastDrawnIndex = useRef<number>(-1);
   const requestRef = useRef<number | null>(null);
 
@@ -53,8 +56,6 @@ export default function ScrollyCanvas() {
     if (!canvasRef.current || images.length < FRAME_COUNT) return;
 
     const frameIndex = Math.floor(index);
-    // CRITICAL PERFORMANCE FIX: Do not redraw if the integer frame index hasn't changed.
-    // Framer motion fires hundreds of times for tiny float changes (e.g., 1.1, 1.2).
     if (frameIndex === lastDrawnIndex.current) return;
     lastDrawnIndex.current = frameIndex;
 
@@ -62,17 +63,15 @@ export default function ScrollyCanvas() {
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
-    const isMobile = typeof window !== "undefined" && window.innerWidth < 768;
+    const isLowEnd = tier === "low" || isMobile;
 
-    if (!isMobile) {
-      // Enable 4K/High-res upscaling algorithms only on desktop
+    if (!isLowEnd) {
+      // Enable 4K/High-res upscaling algorithms only on powerful desktop
       ctx.imageSmoothingEnabled = true;
       ctx.imageSmoothingQuality = "high";
-      
-      // Filter is a massive performance killer on mobile CPUs, only apply on desktop
       ctx.filter = "contrast(1.05) saturate(1.05)";
     } else {
-      // Fast path for mobile
+      // Fast path for low-end / mobile CPUs
       ctx.imageSmoothingEnabled = false;
       ctx.filter = "none";
     }
@@ -80,7 +79,6 @@ export default function ScrollyCanvas() {
     const img = images[frameIndex];
     if (!img) return;
 
-    // Calculate aspect ratio covering the canvas (object-fit: cover)
     const canvasWidth = canvas.width;
     const canvasHeight = canvas.height;
     const imgWidth = img.width;
@@ -93,7 +91,6 @@ export default function ScrollyCanvas() {
     ctx.clearRect(0, 0, canvasWidth, canvasHeight);
     ctx.drawImage(img, x, y, imgWidth * scale, imgHeight * scale);
 
-    // --- MASK THE VEO LOGO (BLENDED SMEAR TECHNIQUE) ---
     const maskWidth = 120;
     const maskHeight = 60;
     const paddingRight = 0;
@@ -102,26 +99,21 @@ export default function ScrollyCanvas() {
     const logoX = imgWidth - maskWidth - paddingRight;
     const logoY = imgHeight - maskHeight - paddingBottom;
 
-    // Calculate exact rendered coordinates
     const renderX = x + logoX * scale;
     const renderY = y + logoY * scale;
     const renderW = maskWidth * scale;
     const renderH = maskHeight * scale;
 
-    // Grab a 1-pixel high horizontal slice from exactly ABOVE the logo
-    // and stretch it vertically over the logo area to seamlessly blend it.
-    // CRITICAL FIX: Disable this on mobile. Reading back from the canvas (`ctx.drawImage(canvas, ...)`) 
-    // causes massive GPU pipeline stalls on mobile devices, killing the framerate.
-    if (!isMobile && renderY > 0) {
+    // GPU pipeline stall fix: Only read back from canvas if high-end desktop
+    if (!isLowEnd && renderY > 0) {
       ctx.drawImage(
         canvas,
-        renderX, renderY - 1, renderW, 1, // Source: 1px slice just above
-        renderX, renderY, renderW, renderH // Destination: Over the logo
+        renderX, renderY - 1, renderW, 1, 
+        renderX, renderY, renderW, renderH 
       );
     }
   };
 
-  // Listen to scroll progress and redraw efficiently
   useMotionValueEvent(currentIndex, "change", (latest) => {
     if (requestRef.current !== null) {
       cancelAnimationFrame(requestRef.current);
@@ -131,21 +123,16 @@ export default function ScrollyCanvas() {
     });
   });
 
-  // Handle window resize and initial drawing
   useEffect(() => {
     const handleResize = () => {
       if (canvasRef.current) {
-        const isMobile = window.innerWidth < 768;
-        // On mobile, aggressively downscale the internal rendering resolution.
-        // A DPR of 0.75 renders internally smaller and lets CSS scale it up. 
-        // This stops the mobile GPU from choking on massive texture uploads.
-        const maxDpr = isMobile ? 0.75 : 2.5; 
+        // Drastically limit rendering resolution on low-end hardware
+        const maxDpr = tier === "low" ? (isMobile ? 0.5 : 1.0) : (isMobile ? 1.0 : 2.5);
         const dpr = Math.min(window.devicePixelRatio || 1, maxDpr);
         
         canvasRef.current.width = window.innerWidth * dpr;
         canvasRef.current.height = window.innerHeight * dpr;
         
-        // Force redraw on resize
         lastDrawnIndex.current = -1;
         drawFrame(currentIndex.get());
       }
@@ -156,7 +143,7 @@ export default function ScrollyCanvas() {
 
     return () => window.removeEventListener("resize", handleResize);
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [imagesLoaded, images]);
+  }, [imagesLoaded, images, tier, isMobile]);
 
   return (
     <div ref={containerRef} className="relative h-[500vh] w-full bg-[#121212]">
