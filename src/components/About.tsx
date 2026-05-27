@@ -23,7 +23,7 @@ export default function About() {
   ];
 
   return (
-    <section id="about" className="relative z-20 bg-[#121212] py-32 px-6 md:px-12 lg:px-24 border-t border-white/5 overflow-hidden">
+    <section id="about" className="relative z-20 bg-transparent py-32 px-6 md:px-12 lg:px-24 border-t border-white/5 overflow-hidden">
       
       {/* Background ambient glow */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-emerald-900/10 blur-[120px] rounded-full pointer-events-none" />

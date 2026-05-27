@@ -36,7 +36,7 @@ export default function Contact() {
   const isLowEnd = tier === "low";
 
   return (
-    <section id="contact" className="relative z-20 bg-[#121212] pt-32 pb-24 px-6 md:px-12 lg:px-24 border-t border-white/5">
+    <section id="contact" className="relative z-20 bg-transparent pt-32 pb-24 px-6 md:px-12 lg:px-24 border-t border-white/5">
       <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-16">
         
         <motion.div 
