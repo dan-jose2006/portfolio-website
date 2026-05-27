@@ -45,9 +45,18 @@ export default function ScrollyCanvas() {
     }, 0);
   }, []);
 
+  const lastDrawnIndex = useRef<number>(-1);
+  const requestRef = useRef<number | null>(null);
+
   // Draw a specific frame to the canvas
   const drawFrame = (index: number) => {
     if (!canvasRef.current || images.length < FRAME_COUNT) return;
+
+    const frameIndex = Math.floor(index);
+    // CRITICAL PERFORMANCE FIX: Do not redraw if the integer frame index hasn't changed.
+    // Framer motion fires hundreds of times for tiny float changes (e.g., 1.1, 1.2).
+    if (frameIndex === lastDrawnIndex.current) return;
+    lastDrawnIndex.current = frameIndex;
 
     const canvas = canvasRef.current;
     const ctx = canvas.getContext("2d");
@@ -68,7 +77,7 @@ export default function ScrollyCanvas() {
       ctx.filter = "none";
     }
 
-    const img = images[Math.floor(index)];
+    const img = images[frameIndex];
     if (!img) return;
 
     // Calculate aspect ratio covering the canvas (object-fit: cover)
@@ -110,9 +119,14 @@ export default function ScrollyCanvas() {
     }
   };
 
-  // Listen to scroll progress and redraw
+  // Listen to scroll progress and redraw efficiently
   useMotionValueEvent(currentIndex, "change", (latest) => {
-    drawFrame(latest);
+    if (requestRef.current !== null) {
+      cancelAnimationFrame(requestRef.current);
+    }
+    requestRef.current = requestAnimationFrame(() => {
+      drawFrame(latest);
+    });
   });
 
   // Handle window resize and initial drawing
@@ -120,13 +134,15 @@ export default function ScrollyCanvas() {
     const handleResize = () => {
       if (canvasRef.current) {
         const isMobile = window.innerWidth < 768;
-        // On mobile, cap the device pixel ratio to 1.5 to prevent massive 4K canvas generation which causes severe lag
-        const maxDpr = isMobile ? 1.25 : 2.5; 
+        // On mobile, cap the device pixel ratio to exactly 1 to prevent massive memory/GPU usage
+        const maxDpr = isMobile ? 1 : 2.5; 
         const dpr = Math.min(window.devicePixelRatio || 1, maxDpr);
         
         canvasRef.current.width = window.innerWidth * dpr;
         canvasRef.current.height = window.innerHeight * dpr;
         
+        // Force redraw on resize
+        lastDrawnIndex.current = -1;
         drawFrame(currentIndex.get());
       }
     };
