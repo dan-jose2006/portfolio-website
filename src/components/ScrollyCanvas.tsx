@@ -53,12 +53,20 @@ export default function ScrollyCanvas() {
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
-    // Enable 4K/High-res upscaling algorithms
-    ctx.imageSmoothingEnabled = true;
-    ctx.imageSmoothingQuality = "high";
-    
-    // Optional: add a slight contrast boost to make details pop
-    ctx.filter = "contrast(1.05) saturate(1.05)";
+    const isMobile = typeof window !== "undefined" && window.innerWidth < 768;
+
+    if (!isMobile) {
+      // Enable 4K/High-res upscaling algorithms only on desktop
+      ctx.imageSmoothingEnabled = true;
+      ctx.imageSmoothingQuality = "high";
+      
+      // Filter is a massive performance killer on mobile CPUs, only apply on desktop
+      ctx.filter = "contrast(1.05) saturate(1.05)";
+    } else {
+      // Fast path for mobile
+      ctx.imageSmoothingEnabled = false;
+      ctx.filter = "none";
+    }
 
     const img = images[Math.floor(index)];
     if (!img) return;
@@ -111,8 +119,11 @@ export default function ScrollyCanvas() {
   useEffect(() => {
     const handleResize = () => {
       if (canvasRef.current) {
-        // Use devicePixelRatio for crystal clear high-DPI (Retina) rendering
-        const dpr = window.devicePixelRatio || 1;
+        const isMobile = window.innerWidth < 768;
+        // On mobile, cap the device pixel ratio to 1.5 to prevent massive 4K canvas generation which causes severe lag
+        const maxDpr = isMobile ? 1.25 : 2.5; 
+        const dpr = Math.min(window.devicePixelRatio || 1, maxDpr);
+        
         canvasRef.current.width = window.innerWidth * dpr;
         canvasRef.current.height = window.innerHeight * dpr;
         
