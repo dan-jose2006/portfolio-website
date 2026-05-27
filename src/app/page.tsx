@@ -17,7 +17,7 @@ export default function Home() {
   const [certError, setCertError] = useState(false);
 
   return (
-    <main className="bg-[#121212] min-h-screen selection:bg-emerald-400 selection:text-[#121212]">
+    <main className="bg-transparent min-h-screen selection:bg-emerald-400 selection:text-[#121212]">
       {/* Top Navigation */}
       <Navbar />
 

@@ -9,9 +9,6 @@ export default function Starfield() {
   const isLowEnd = tier === "low";
 
   useEffect(() => {
-    // Completely disable on low-end hardware to save frames
-    if (isLowEnd) return;
-
     const canvas = canvasRef.current;
     if (!canvas) return;
 
@@ -29,8 +26,9 @@ export default function Starfield() {
 
     const initStars = () => {
       stars = [];
-      // Dynamic star count: less dense on smaller screens
-      const numStars = Math.floor((canvas.width * canvas.height) / 12000); 
+      // If low end, heavily reduce star count to preserve frames (e.g., just a static few)
+      const divider = isLowEnd ? 40000 : 12000;
+      const numStars = Math.floor((canvas.width * canvas.height) / divider); 
       for (let i = 0; i < numStars; i++) {
         stars.push({
           x: Math.random() * canvas.width,
@@ -49,18 +47,20 @@ export default function Starfield() {
       ctx.fillStyle = "white";
 
       stars.forEach(star => {
-        // Move star
-        star.x += star.vx;
-        star.y += star.vy;
-        
-        // Wrap around edges
-        if (star.x < 0) star.x = canvas.width;
-        if (star.x > canvas.width) star.x = 0;
-        if (star.y < 0) star.y = canvas.height;
-        if (star.y > canvas.height) star.y = 0;
+        // Move star if not low end
+        if (!isLowEnd) {
+          star.x += star.vx;
+          star.y += star.vy;
+          
+          // Wrap around edges
+          if (star.x < 0) star.x = canvas.width;
+          if (star.x > canvas.width) star.x = 0;
+          if (star.y < 0) star.y = canvas.height;
+          if (star.y > canvas.height) star.y = 0;
+        }
 
-        // Twinkle effect
-        star.alpha += star.dAlpha;
+        // Twinkle effect (slower on low end)
+        star.alpha += isLowEnd ? star.dAlpha * 0.5 : star.dAlpha;
         if (star.alpha <= 0.1 || star.alpha >= 1) {
           star.dAlpha = -star.dAlpha;
         }
@@ -83,8 +83,6 @@ export default function Starfield() {
       cancelAnimationFrame(animationFrameId);
     };
   }, [isLowEnd]);
-
-  if (isLowEnd) return null;
 
   return (
     <canvas 

@@ -36,10 +36,10 @@ export function PerformanceProvider({ children }: { children: ReactNode }) {
     const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
     // A device is considered "low" tier if:
-    // 1. It has <= 4 CPU cores (most modern phones/laptops have 6-8+)
-    // 2. It has <= 4GB of RAM
+    // 1. It has < 4 CPU cores (true budget devices)
+    // 2. It has < 4GB of RAM
     // 3. User specifically requested reduced motion
-    if (cores <= 4 || ram <= 4 || prefersReducedMotion) {
+    if (cores < 4 || ram < 4 || prefersReducedMotion) {
       calculatedTier = "low";
     }
 
