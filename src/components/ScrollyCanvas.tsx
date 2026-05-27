@@ -110,7 +110,9 @@ export default function ScrollyCanvas() {
 
     // Grab a 1-pixel high horizontal slice from exactly ABOVE the logo
     // and stretch it vertically over the logo area to seamlessly blend it.
-    if (renderY > 0) {
+    // CRITICAL FIX: Disable this on mobile. Reading back from the canvas (`ctx.drawImage(canvas, ...)`) 
+    // causes massive GPU pipeline stalls on mobile devices, killing the framerate.
+    if (!isMobile && renderY > 0) {
       ctx.drawImage(
         canvas,
         renderX, renderY - 1, renderW, 1, // Source: 1px slice just above
@@ -134,8 +136,10 @@ export default function ScrollyCanvas() {
     const handleResize = () => {
       if (canvasRef.current) {
         const isMobile = window.innerWidth < 768;
-        // On mobile, cap the device pixel ratio to exactly 1 to prevent massive memory/GPU usage
-        const maxDpr = isMobile ? 1 : 2.5; 
+        // On mobile, aggressively downscale the internal rendering resolution.
+        // A DPR of 0.75 renders internally smaller and lets CSS scale it up. 
+        // This stops the mobile GPU from choking on massive texture uploads.
+        const maxDpr = isMobile ? 0.75 : 2.5; 
         const dpr = Math.min(window.devicePixelRatio || 1, maxDpr);
         
         canvasRef.current.width = window.innerWidth * dpr;
