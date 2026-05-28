@@ -65,16 +65,14 @@ export default function Projects() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, margin: "-100px" }}
                   transition={{ duration: 0.5, ease: "easeInOut" }}
-                  className={`group relative overflow-hidden rounded-3xl bg-[#1a1a1a] border border-white/5 cursor-pointer flex flex-col ${
-                    isActive ? "md:col-span-2 md:flex-row shadow-2xl shadow-emerald-900/20 ring-1 ring-white/10 z-20" : "hover:bg-[#222] hover:border-white/10"
-                  }`}
+                  className={`group relative overflow-hidden rounded-3xl bg-[#1a1a1a] border border-white/5 cursor-pointer flex flex-col ${isActive ? "md:col-span-2 md:flex-row shadow-2xl shadow-emerald-900/20 ring-1 ring-white/10 z-20" : "hover:bg-[#222] hover:border-white/10"
+                    }`}
                 >
                   {/* Image Section */}
-                  <motion.div 
-                    layout 
-                    className={`relative overflow-hidden bg-black ${
-                      isActive ? "h-[300px] md:h-[450px] md:w-1/2" : "h-[260px] w-full"
-                    }`}
+                  <motion.div
+                    layout
+                    className={`relative overflow-hidden bg-black ${isActive ? "h-[300px] md:h-[450px] md:w-1/2" : "h-[260px] w-full"
+                      }`}
                   >
                     <motion.div
                       className={`absolute inset-0 bg-cover bg-center transition-transform duration-700 ${isActive ? "scale-100" : "scale-105 group-hover:scale-110"}`}
@@ -84,13 +82,12 @@ export default function Projects() {
                     <div className="absolute inset-0 bg-gradient-to-t from-[#1a1a1a] via-transparent to-transparent opacity-80 md:hidden" />
                     {isActive && <div className="hidden md:block absolute inset-0 bg-gradient-to-r from-transparent to-[#1a1a1a] opacity-100" />}
                   </motion.div>
-                  
+
                   {/* Content Section */}
-                  <motion.div 
-                    layout 
-                    className={`flex flex-col justify-between p-6 md:p-8 ${
-                      isActive ? "md:w-1/2" : "w-full"
-                    }`}
+                  <motion.div
+                    layout
+                    className={`flex flex-col justify-between p-6 md:p-8 ${isActive ? "md:w-1/2" : "w-full"
+                      }`}
                   >
                     <div>
                       <div className="flex justify-between items-start mb-4">
@@ -98,7 +95,7 @@ export default function Projects() {
                           {project.category}
                         </motion.p>
                         {isActive && (
-                          <motion.button 
+                          <motion.button
                             initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.8 }}
                             className="p-2 bg-white/5 rounded-full hover:bg-white/10 transition text-white/70 hover:text-white hidden md:block"
                             onClick={(e) => { e.stopPropagation(); setActiveProject(null); }}
@@ -107,14 +104,14 @@ export default function Projects() {
                           </motion.button>
                         )}
                       </div>
-                      
+
                       <motion.h4 layout className={`font-bold text-white mb-4 ${isActive ? "text-3xl md:text-4xl" : "text-2xl"}`}>
                         {project.title}
                       </motion.h4>
 
                       {/* Expanded Content */}
                       {isActive && (
-                        <motion.div 
+                        <motion.div
                           initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.1 }}
                         >
                           <p className="text-white/70 text-lg leading-relaxed mb-6">

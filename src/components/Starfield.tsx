@@ -17,7 +17,7 @@ export default function Starfield() {
 
     let animationFrameId: number;
     let particles: Particle[] = [];
-    
+
     let mouse = { x: -1000, y: -1000 };
 
     class Particle {
@@ -94,7 +94,7 @@ export default function Starfield() {
             ctx.stroke();
           }
         }
-        
+
         // Connect to mouse
         if (!isLowEnd) {
           const dxMouse = particles[i].x - mouse.x;
@@ -114,12 +114,12 @@ export default function Starfield() {
 
     const animate = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-      
+
       particles.forEach(p => {
         p.update();
         p.draw();
       });
-      
+
       if (!isLowEnd) {
         drawLines();
       }
@@ -140,7 +140,7 @@ export default function Starfield() {
     window.addEventListener("resize", resize);
     window.addEventListener("mousemove", handleMouseMove);
     window.addEventListener("mouseout", handleMouseLeave);
-    
+
     resize();
     animate();
 
@@ -153,9 +153,9 @@ export default function Starfield() {
   }, [isLowEnd]);
 
   return (
-    <canvas 
-      ref={canvasRef} 
-      className="fixed inset-0 z-0 pointer-events-none" 
+    <canvas
+      ref={canvasRef}
+      className="fixed inset-0 z-0 pointer-events-none"
     />
   );
 }

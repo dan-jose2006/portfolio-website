@@ -11,6 +11,7 @@ import Navbar from "@/components/Navbar";
 import Experience from "@/components/Experience";
 import Contact from "@/components/Contact";
 import Modal from "@/components/Modal";
+import ChatBot from "@/components/ChatBot";
 
 export default function Home() {
   const [isCertModalOpen, setIsCertModalOpen] = useState(false);
@@ -49,9 +50,9 @@ export default function Home() {
         <div className="p-2 w-full">
           {!certError ? (
             <div className="relative w-full h-[60vh] md:h-[80vh]">
-              <Image 
-                src="/certificate.png" 
-                alt="L&T EduTech Certificate" 
+              <Image
+                src="/certificate.png"
+                alt="L&T EduTech Certificate"
                 fill
                 className="object-contain rounded-xl"
                 onError={() => setCertError(true)}
@@ -65,6 +66,9 @@ export default function Home() {
           )}
         </div>
       </Modal>
+
+      {/* AI Assistant */}
+      <ChatBot />
 
     </main>
   );

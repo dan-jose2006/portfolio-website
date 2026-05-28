@@ -31,7 +31,7 @@ export default function Skills() {
           </h3>
         </motion.div>
 
-        <div 
+        <div
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-8 relative"
           onMouseLeave={() => setHoveredIdx(null)}
         >
@@ -59,16 +59,16 @@ export default function Skills() {
                   transition={isLowEnd ? { duration: 0.2 } : { type: "spring", bounce: 0.25, duration: 0.6 }}
                 />
               )}
-              
+
               {/* Default background that fades out when the fluid glass droplet slides behind it */}
               <div className={`absolute inset-0 border border-white/10 rounded-3xl -z-20 transition-opacity duration-500 ${isLowEnd ? 'bg-[#222]' : 'bg-white/5'} ${hoveredIdx === idx ? 'opacity-0' : 'opacity-100'}`} />
 
               <h4 className={`text-2xl font-semibold text-emerald-400 mb-8 group-hover:text-white transition-colors duration-500 ${isLowEnd ? '' : 'drop-shadow-md'}`}>{skillGroup.category}</h4>
-              <ul className="flex flex-col gap-5">
-                {skillGroup.items.map((item) => (
-                  <li key={item} className="text-white/80 font-medium flex items-center gap-4 group-hover:text-white transition-colors duration-500 text-lg">
+              <ul className="grid grid-cols-2 gap-4 relative z-10">
+                {skillGroup.items.map((skill) => (
+                  <li key={skill} className="text-gray-400 flex items-center gap-3 text-sm group/item">
                     <span className={`w-1.5 h-1.5 rounded-full bg-blue-400 group-hover:bg-emerald-400 group-hover:scale-150 transition-all duration-500 ${isLowEnd ? '' : 'group-hover:shadow-[0_0_10px_#34d399]'}`} />
-                    <span className={isLowEnd ? '' : 'group-hover:mix-blend-screen'}>{item}</span>
+                    <span className="group-hover/item:text-white transition-colors">{skill}</span>
                   </li>
                 ))}
               </ul>

@@ -29,7 +29,7 @@ export default function Overlay() {
       className="absolute top-0 left-0 w-full h-[500vh] pointer-events-none z-10"
     >
       <div className="sticky top-0 h-screen w-full flex flex-col justify-center items-center overflow-hidden">
-        
+
         <motion.div
           style={{ opacity: opacity1, y: y1 }}
           className="absolute flex flex-col items-center justify-center text-center px-4"

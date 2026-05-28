@@ -38,22 +38,24 @@ export default function Contact() {
   return (
     <section id="contact" className="relative z-20 bg-transparent pt-32 pb-24 px-6 md:px-12 lg:px-24 border-t border-white/5">
       <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-16">
-        
-        <motion.div 
+
+        <motion.div
           initial={{ opacity: 0, y: 50 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.8 }}
           className="md:w-1/2"
         >
-          <h2 className="text-5xl md:text-7xl font-bold text-white tracking-tight leading-tight mb-8">
-            Let's build something <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-emerald-400">intelligent.</span>
-          </h2>
+          <div className="mb-12">
+            <h2 className="text-5xl md:text-7xl font-bold text-white leading-tight mb-6 tracking-tight">
+              Let's build something <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-emerald-400">intelligent.</span>
+            </h2>
+          </div>
           <p className="text-xl text-white/70 mb-12 max-w-lg">
             I'm currently looking for new opportunities and collaborations. My inbox is always open.
           </p>
-          <motion.a 
-            href="mailto:dan.abraham1602@gmail.com" 
+          <motion.a
+            href="mailto:dan.abraham1602@gmail.com"
             whileHover={isLowEnd ? {} : { scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             transition={{ type: "spring", bounce: 0.25, duration: 0.6 }}
@@ -70,7 +72,7 @@ export default function Contact() {
           </motion.a>
         </motion.div>
 
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, x: 50 }}
           whileInView={{ opacity: 1, x: 0 }}
           viewport={{ once: true, margin: "-100px" }}
@@ -79,7 +81,7 @@ export default function Contact() {
           onMouseLeave={() => setHoveredIdx(null)}
         >
           {CONTACT_LINKS.map((link, idx) => (
-            <a 
+            <a
               key={link.id}
               href={link.href}
               target={link.id !== "email" ? "_blank" : undefined}
@@ -101,7 +103,7 @@ export default function Contact() {
                   transition={isLowEnd ? { duration: 0.2 } : { type: "spring", bounce: 0.25, duration: 0.6 }}
                 />
               )}
-              
+
               {/* Default background */}
               <div className={`absolute inset-0 border border-white/10 rounded-3xl -z-20 transition-opacity duration-500 ${isLowEnd ? 'bg-[#222]' : 'bg-white/5'} ${hoveredIdx === idx ? 'opacity-0' : 'opacity-100'}`} />
 

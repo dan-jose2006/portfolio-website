@@ -15,13 +15,13 @@ export default function Experience({ onShowCertificate }: ExperienceProps) {
   return (
     <section id="experience" className="relative z-20 bg-transparent pt-32 pb-16 px-6 md:px-12 lg:px-24">
       <div className="max-w-7xl mx-auto flex flex-col md:flex-row gap-16 items-start">
-        
-        <motion.div 
+
+        <motion.div
           initial={{ opacity: 0, x: -50 }}
           whileInView={{ opacity: 1, x: 0 }}
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.8 }}
-          className="md:w-1/3"
+          className="md:w-1/3 md:sticky md:top-32"
         >
           <h3 className="text-sm font-medium text-emerald-400 uppercase tracking-widest mb-4">
             Professional Experience
@@ -31,14 +31,14 @@ export default function Experience({ onShowCertificate }: ExperienceProps) {
           </h2>
         </motion.div>
 
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: 50 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.8, delay: 0.2 }}
           className="md:w-2/3 flex flex-col gap-8 w-full"
         >
-          <motion.div 
+          <motion.div
             whileHover={isLowEnd ? {} : { scale: 1.02 }}
             transition={{ type: "spring", bounce: 0.25, duration: 0.6 }}
             className={`relative border border-white/10 rounded-[2rem] p-8 md:p-12 transition-colors duration-500 group overflow-hidden ${isLowEnd ? 'bg-[#222]' : 'bg-white/5 backdrop-blur-md'}`}
@@ -48,21 +48,21 @@ export default function Experience({ onShowCertificate }: ExperienceProps) {
               <div className="absolute inset-0 bg-gradient-to-br from-white/[0.07] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
             )}
 
-            <div className="relative z-10 flex flex-col md:flex-row justify-between md:items-center gap-4 mb-8">
+            <div className="mb-6 flex flex-col md:flex-row md:justify-between md:items-baseline gap-2">
               <div>
-                <h4 className={`text-3xl font-bold text-white mb-2 tracking-tight transition-all ${isLowEnd ? '' : 'group-hover:drop-shadow-lg'}`}>AI/ML Internship</h4>
+                <h4 className="text-2xl font-bold text-white mb-1">AI/ML Internship</h4>
                 <p className="text-xl text-emerald-400 font-medium">Larsen & Toubro EduTech</p>
               </div>
               <div className="text-white/60 text-sm font-mono bg-black/40 px-5 py-2.5 rounded-full inline-block border border-white/5 shadow-inner">
                 April – May 2026 | Chennai, India
               </div>
             </div>
-            
+
             <p className="relative z-10 text-white/70 leading-relaxed mb-10 text-lg md:text-xl font-light">
               Successfully completed an intensive internship program at Larsen & Toubro Campus, Chennai, focusing on practical AI/ML applications and system-level development. This experience reinforced my expertise in real-world AI implementation and problem-solving in enterprise environments.
             </p>
 
-            <motion.button 
+            <motion.button
               onClick={onShowCertificate}
               whileHover={isLowEnd ? {} : { scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
