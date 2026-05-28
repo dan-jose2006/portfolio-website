@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Send, X, MessageSquare, Bot } from "lucide-react";
+import { Send, X, MessageSquare } from "lucide-react";
 
 type Message = {
   id: string;
@@ -34,23 +34,72 @@ export default function ChatBot() {
     setMessages(prev => [...prev, userMsg]);
     setInput("");
 
-    // Simple NLP / Keyword Matching Logic
     setTimeout(() => {
-      let botResponse = "I'm still learning! You can ask me about Dan's skills, his experience, or how to contact him.";
+      // Advanced Intent Matching Logic
+      let botResponse = "";
       const lowerInput = userMsg.text.toLowerCase();
 
-      if (lowerInput.includes("skill") || lowerInput.includes("tech") || lowerInput.includes("stack")) {
-        botResponse = "Dan specializes in AI & Machine Learning. He is skilled in Python, TensorFlow, React, Next.js, and creating interactive web experiences.";
-      } else if (lowerInput.includes("experience") || lowerInput.includes("internship") || lowerInput.includes("l&t")) {
-        botResponse = "Dan completed an AI/ML Internship at Larsen & Toubro EduTech in Chennai (April-May 2026), where he built intelligent systems.";
-      } else if (lowerInput.includes("contact") || lowerInput.includes("hire") || lowerInput.includes("email")) {
-        botResponse = "You can reach Dan directly at dan.abraham1602@gmail.com! His inbox is always open for exciting opportunities.";
-      } else if (lowerInput.includes("hello") || lowerInput.includes("hi") || lowerInput.includes("hey")) {
-        botResponse = "Hello there! Ask me anything about Dan's portfolio.";
-      } else if (lowerInput.includes("name") || lowerInput.includes("who are you")) {
-        botResponse = "I'm Nexus, Dan's custom-built AI assistant!";
+      const intents = [
+        {
+          keywords: ["skill", "tech", "stack", "language", "framework", "tool", "know", "use", "program", "code", "coding", "can you do"],
+          response: "Dan is an AI/ML Engineer specializing in Python, TensorFlow, React, and Next.js. He bridges the gap between complex machine learning models and beautiful web interfaces!"
+        },
+        {
+          keywords: ["experience", "work", "job", "intern", "l&t", "larsen", "toubro", "career", "history", "employed"],
+          response: "Dan worked as an AI/ML Intern at Larsen & Toubro EduTech, where he built intelligent systems. He has hands-on experience bringing AI concepts into production."
+        },
+        {
+          keywords: ["project", "build", "create", "made", "portfolio", "github", "showcase", "done"],
+          response: "Dan has built several impressive projects! You can check out the Projects section above to see his AI applications and full-stack web builds."
+        },
+        {
+          keywords: ["contact", "hire", "email", "reach", "touch", "message", "call", "talk", "connect"],
+          response: "You can reach Dan directly at dan.abraham1602@gmail.com, or through his LinkedIn linked above. His inbox is always open for exciting opportunities!"
+        },
+        {
+          keywords: ["education", "study", "college", "school", "degree", "btech", "university", "graduate"],
+          response: "Dan is currently pursuing his BTech, specializing in Artificial Intelligence and Machine Learning. He's passionate about continuous learning."
+        },
+        {
+          keywords: ["about", "who is dan", "background", "bio", "tell me about"],
+          response: "Dan Abraham Jose is a passionate AI/ML Engineer who loves combining artificial intelligence with modern, interactive web development."
+        },
+        {
+          keywords: ["name", "who are you", "what are you", "bot", "ai", "nexus", "assistant"],
+          response: "I'm Nexus, a custom AI assistant built specifically for Dan's portfolio. I'm here to answer your questions about him!"
+        },
+        {
+          keywords: ["hello", "hi", "hey", "greetings", "sup", "yo", "morning", "evening"],
+          response: "Hello there! I'm Nexus. What would you like to know about Dan?"
+        },
+        {
+          keywords: ["thank", "thanks", "appreciate", "good job", "cool", "awesome"],
+          response: "You're welcome! Let me know if you need anything else."
+        },
+        {
+          keywords: ["resume", "cv", "download", "document"],
+          response: "You can download Dan's resume by clicking the glowing 'Resume' button in the navigation bar!"
+        }
+      ];
+
+      // Find the first matching intent
+      for (const intent of intents) {
+        if (intent.keywords.some(k => lowerInput.includes(k))) {
+          botResponse = intent.response;
+          break;
+        }
       }
 
+      // Dynamic Fallback
+      if (!botResponse) {
+        const fallbacks = [
+          "I'm a simple bot and didn't quite catch that. Try asking about Dan's skills, projects, or experience!",
+          "Hmm, I'm not sure. You can ask me things like 'What are Dan's skills?' or 'How do I contact him?'",
+          "My AI circuits are still training on that one! Want to know about Dan's tech stack or internship instead?"
+        ];
+        botResponse = fallbacks[Math.floor(Math.random() * fallbacks.length)];
+      }
+      
       setMessages(prev => [...prev, { id: (Date.now() + 1).toString(), sender: "bot", text: botResponse }]);
     }, 600);
   };
@@ -72,9 +121,7 @@ export default function ChatBot() {
             <div className="p-4 border-b border-white/10 bg-black/40 flex items-center justify-between">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 relative bg-emerald-900/30 rounded-full border border-emerald-500/30 overflow-hidden flex items-center justify-center">
-                  <object data="/robot-assistant.svg" type="image/svg+xml" width="32" height="32" className="object-contain mt-1 pointer-events-none">
-                    <img src="/robot-assistant.svg" alt="Nexus Robot" width="32" height="32" className="object-contain mt-1" />
-                  </object>
+                  <video src="/walking-robot.mp4" autoPlay loop muted playsInline className="w-full h-full object-cover scale-[1.2]" />
                 </div>
                 <div>
                   <h3 className="text-white font-bold text-sm">Nexus Assistant</h3>
@@ -163,11 +210,19 @@ export default function ChatBot() {
             <X className="w-6 h-6 text-white" />
           ) : (
             <div className="relative w-full h-full flex items-center justify-center">
-              {/* Add a subtle pulsing glow behind the robot */}
+              {/* Glowing portal effect */}
               <div className="absolute inset-0 rounded-full bg-emerald-400/20 blur-md animate-pulse" />
-              <object data="/robot-assistant.svg" type="image/svg+xml" width="48" height="48" className="object-contain relative z-10 pointer-events-none">
-                <img src="/robot-assistant.svg" alt="Nexus Robot" width="48" height="48" className="object-contain relative z-10" />
-              </object>
+              <div className="absolute inset-0 rounded-full overflow-hidden border-2 border-emerald-500/30 flex items-center justify-center bg-black/60 backdrop-blur-md z-10 shadow-[inset_0_0_15px_rgba(52,211,153,0.3)]">
+                <video 
+                  src="/walking-robot.mp4" 
+                  autoPlay 
+                  loop 
+                  muted 
+                  playsInline 
+                  className="w-full h-full object-cover scale-[1.2]" 
+                  style={{ mixBlendMode: 'screen' }}
+                />
+              </div>
             </div>
           )}
         </button>

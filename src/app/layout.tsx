@@ -16,12 +16,35 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Dan Abraham Jose | AI/ML Engineer",
   description: "Portfolio of Dan Abraham Jose, a BTech student specializing in Artificial Intelligence and Machine Learning, building intelligent technology solutions.",
-  keywords: ["AI Engineer", "Machine Learning", "Dan Abraham Jose", "Portfolio", "Next.js", "Full Stack", "Developer"],
+  keywords: ["Dan Abraham Jose", "AI Engineer", "Machine Learning", "Artificial Intelligence", "Portfolio", "Next.js", "Full Stack", "Developer", "Software Engineer"],
+  authors: [{ name: "Dan Abraham Jose" }],
+  creator: "Dan Abraham Jose",
   openGraph: {
     title: "Dan Abraham Jose | AI/ML Engineer",
-    description: "Building intelligent, interactive, and user-focused technology solutions.",
-    type: "website",
+    description: "Portfolio of Dan Abraham Jose, building intelligent, interactive, and user-focused technology solutions in AI and Full Stack.",
+    type: "profile",
+    firstName: "Dan Abraham",
+    lastName: "Jose",
+    siteName: "Dan Abraham Jose Portfolio",
   },
+  twitter: {
+    card: "summary_large_image",
+    title: "Dan Abraham Jose | AI/ML Engineer",
+    description: "Portfolio of Dan Abraham Jose, building intelligent technology solutions.",
+  },
+};
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  name: "Dan Abraham Jose",
+  jobTitle: "AI/ML Engineer",
+  url: "https://dan-jose-portfolio.vercel.app/",
+  sameAs: [
+    "https://github.com/yourgithub", // Note: Replace with actual GitHub URL
+    "https://www.linkedin.com/in/dan-jose-4997b5315"
+  ],
+  knowsAbout: ["Artificial Intelligence", "Machine Learning", "Web Development", "React", "Next.js", "Full Stack Development"]
 };
 
 import { PerformanceProvider } from "@/context/PerformanceContext";
@@ -37,6 +60,12 @@ export default function RootLayout({
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
+      </head>
       <body className="min-h-full flex flex-col relative bg-[#121212]">
         <PerformanceProvider>
           <Starfield />
