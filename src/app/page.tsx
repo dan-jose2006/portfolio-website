@@ -14,7 +14,7 @@ import Modal from "@/components/Modal";
 import ChatBot from "@/components/ChatBot";
 
 export default function Home() {
-  const [isCertModalOpen, setIsCertModalOpen] = useState(false);
+  const [activeCert, setActiveCert] = useState<'lnt' | 'christ' | null>(null);
   const [certError, setCertError] = useState(false);
 
   return (
@@ -35,7 +35,10 @@ export default function Home() {
       <Skills />
 
       {/* Experience Section */}
-      <Experience onShowCertificate={() => setIsCertModalOpen(true)} />
+      <Experience onShowCertificate={(type) => {
+        setCertError(false);
+        setActiveCert(type);
+      }} />
 
       {/* Projects Grid Section */}
       <div id="projects">
@@ -46,13 +49,13 @@ export default function Home() {
       <Contact />
 
       {/* Certificate Modal */}
-      <Modal isOpen={isCertModalOpen} onClose={() => setIsCertModalOpen(false)}>
+      <Modal isOpen={activeCert !== null} onClose={() => setActiveCert(null)}>
         <div className="p-2 w-full">
-          {!certError ? (
+          {!certError && activeCert ? (
             <div className="relative w-full h-[60vh] md:h-[80vh]">
               <Image
-                src="/certificate.png"
-                alt="L&T EduTech Certificate"
+                src={activeCert === 'lnt' ? "/certificate.png" : "/christ-certificate.jpeg"}
+                alt={`${activeCert === 'lnt' ? 'L&T EduTech' : 'Christ University'} Certificate`}
                 fill
                 className="object-contain rounded-xl"
                 onError={() => setCertError(true)}
@@ -61,7 +64,11 @@ export default function Home() {
           ) : (
             <div className="p-12 text-center bg-white/5 rounded-xl border border-white/10">
               <p className="text-white text-lg font-medium mb-2">Certificate Image Not Found</p>
-              <p className="text-white/60">Please place your certificate image in the `public` folder and name it <b>certificate.png</b> to see it here.</p>
+              <p className="text-white/60">
+                {activeCert === 'lnt'
+                  ? "Please place your certificate image in the `public` folder and name it <b>certificate.png</b> to see it here."
+                  : "Please place your Christ University certificate image in the `public` folder and name it <b>christ-certificate.jpeg</b> to see it here."}
+              </p>
             </div>
           )}
         </div>
