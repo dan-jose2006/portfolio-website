@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Send, X, MessageSquare } from "lucide-react";
+import { Send, X } from "lucide-react";
 
 type Message = {
   id: string;
@@ -45,8 +45,12 @@ export default function ChatBot() {
           response: "Dan is an AI/ML Engineer specializing in Python, TensorFlow, React, and Next.js. He bridges the gap between complex machine learning models and beautiful web interfaces!"
         },
         {
-          keywords: ["experience", "work", "job", "intern", "l&t", "larsen", "toubro", "career", "history", "employed"],
-          response: "Dan worked as an AI/ML Intern at Larsen & Toubro EduTech, where he built intelligent systems. He has hands-on experience bringing AI concepts into production."
+          keywords: ["experience", "work", "job", "intern", "l&t", "larsen", "toubro", "career", "history", "employed", "christ", "incubation", "cic", "founder"],
+          response: "Dan is currently a Pre-Incubatee / Co-Founder at the CHRIST Incubation Centre (CIC), building innovative products! He also worked as an AI/ML Intern at Larsen & Toubro EduTech, where he built intelligent enterprise systems."
+        },
+        {
+          keywords: ["achievements", "certifications", "awards", "yesummit", "recognized", "won"],
+          response: "Dan was recognized at the National YESummit 2026 and the Karnataka State YESummit 2025 for his active involvement in entrepreneurial innovation! You can see his certificates in the Achievements section."
         },
         {
           keywords: ["project", "build", "create", "made", "portfolio", "github", "showcase", "done"],
@@ -191,7 +195,7 @@ export default function ChatBot() {
                 setHasOpened(true);
               }}
             >
-              Hi, I'm Nexus! Ask me any questions 👋
+              Hi, I&apos;m Nexus! Ask me any questions 👋
             </motion.div>
           )}
         </AnimatePresence>

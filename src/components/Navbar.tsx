@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { Download } from "lucide-react";
 import { usePerformance } from "@/context/PerformanceContext";
 
@@ -80,7 +80,7 @@ export default function Navbar() {
           href="#contact"
           className={`px-4 py-2 md:px-6 md:py-2.5 text-white font-bold rounded-full hover:bg-emerald-400 hover:text-[#121212] transition-all duration-500 uppercase tracking-wider text-[10px] md:text-xs whitespace-nowrap ${isLowEnd ? 'bg-[#444]' : 'bg-white/10 backdrop-blur-xl border border-white/20 hover:border-emerald-400 shadow-[0_0_15px_rgba(255,255,255,0.1)] hover:shadow-[0_0_25px_rgba(52,211,153,0.4)]'}`}
         >
-          Let's Talk
+          Let&apos;s Talk
         </a>
       </motion.div>
     </div>

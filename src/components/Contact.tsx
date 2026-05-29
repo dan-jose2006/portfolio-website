@@ -48,11 +48,11 @@ export default function Contact() {
         >
           <div className="mb-12">
             <h2 className="text-5xl md:text-7xl font-bold text-white leading-tight mb-6 tracking-tight">
-              Let's build something <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-emerald-400">intelligent.</span>
+              Let&apos;s build something <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-emerald-400">intelligent.</span>
             </h2>
           </div>
           <p className="text-xl text-white/70 mb-12 max-w-lg">
-            I'm currently looking for new opportunities and collaborations. My inbox is always open.
+            I&apos;m currently looking for new opportunities and collaborations. My inbox is always open.
           </p>
           <motion.a
             href="mailto:dan.abraham1602@gmail.com"

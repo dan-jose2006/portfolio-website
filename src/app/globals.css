@@ -19,3 +19,29 @@ body {
   overflow-x: hidden;
   scroll-behavior: smooth;
 }
+
+@property --angle {
+  syntax: '<angle>';
+  initial-value: 0deg;
+  inherits: false;
+}
+
+@keyframes rotate-border {
+  to {
+    --angle: 360deg;
+  }
+}
+
+.rotating-border-glow {
+  position: absolute;
+  inset: 0;
+  border-radius: 2rem;
+  padding: 1px;
+  background: conic-gradient(from var(--angle) at 50% 50%, transparent 0%, transparent 60%, rgba(255, 255, 255, 0.8) 80%, transparent 100%);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+  animation: rotate-border 5s linear infinite;
+  z-index: 0;
+}

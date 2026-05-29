@@ -19,9 +19,8 @@ export function PerformanceProvider({ children }: { children: ReactNode }) {
   const [isMobile, setIsMobile] = useState<boolean>(false);
 
   useEffect(() => {
-    // Basic mobile check via window width
+    // Initial mobile check
     const mobileCheck = window.innerWidth < 768;
-    setIsMobile(mobileCheck);
 
     let calculatedTier: PerformanceTier = "high";
 
@@ -29,7 +28,7 @@ export function PerformanceProvider({ children }: { children: ReactNode }) {
     const cores = navigator.hardwareConcurrency || 4;
     
     // Detect RAM (if supported by browser, returns gigabytes)
-    // @ts-ignore
+    // @ts-expect-error deviceMemory is non-standard but useful where available
     const ram = navigator.deviceMemory || 4;
 
     // Check if the user has requested reduced motion
@@ -43,7 +42,9 @@ export function PerformanceProvider({ children }: { children: ReactNode }) {
       calculatedTier = "low";
     }
 
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setTier(calculatedTier);
+    setIsMobile(mobileCheck);
   }, []);
 
   return (

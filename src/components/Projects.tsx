@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowUpRight, X, ExternalLink, Code } from "lucide-react";
+import { ArrowUpRight, X } from "lucide-react";
 
 const PROJECTS = [
   {
