@@ -15,7 +15,7 @@ import Modal from "@/components/Modal";
 import ChatBot from "@/components/ChatBot";
 
 export default function Home() {
-  const [activeCert, setActiveCert] = useState<'lnt' | 'christ' | 'yesummit-2025' | 'yesummit-2026' | null>(null);
+  const [activeCert, setActiveCert] = useState<'lnt' | 'christ' | 'yesummit-2025' | 'yesummit-2026' | 'unlox-hackathon' | null>(null);
   const [certError, setCertError] = useState(false);
 
   return (
@@ -65,9 +65,10 @@ export default function Home() {
                   activeCert === 'lnt' ? "/certificate.png" : 
                   activeCert === 'christ' ? "/christ-certificate.jpeg" :
                   activeCert === 'yesummit-2025' ? "/yesummit-2025-v2.jpeg" :
+                  activeCert === 'unlox-hackathon' ? "/unlox-hackathon.jpeg" :
                   "/yesummit-2026-v2.jpeg"
                 }
-                alt={`${activeCert} Certificate`}
+                alt={activeCert === 'unlox-hackathon' ? "Unlox Hackathon Trophy" : `${activeCert} Certificate`}
                 fill
                 className="object-contain rounded-xl"
                 onError={() => setCertError(true)}
@@ -83,6 +84,8 @@ export default function Home() {
                   ? "Please place your Christ University certificate image in the `public` folder and name it <b>christ-certificate.jpeg</b> to see it here."
                   : activeCert === 'yesummit-2025'
                   ? "Please place your YESummit 2025 certificate image in the `public` folder and name it <b>yesummit-2025-v2.jpeg</b> to see it here."
+                  : activeCert === 'unlox-hackathon'
+                  ? "Please place your Unlox Hackathon image in the `public` folder and name it <b>unlox-hackathon.jpeg</b> to see it here."
                   : "Please place your YESummit 2026 certificate image in the `public` folder and name it <b>yesummit-2026-v2.jpeg</b> to see it here."}
               </p>
             </div>
