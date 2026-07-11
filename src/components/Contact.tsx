@@ -32,8 +32,46 @@ const CONTACT_LINKS = [
 
 export default function Contact() {
   const [hoveredIdx, setHoveredIdx] = useState<number | null>(null);
+  const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
   const { tier } = usePerformance();
   const isLowEnd = tier === "low";
+
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    setStatus("loading");
+    
+    const form = event.currentTarget;
+    const formData = new FormData(form);
+    formData.append("access_key", process.env.NEXT_PUBLIC_WEB3FORMS_KEY || "");
+
+    const object = Object.fromEntries(formData.entries());
+    const json = JSON.stringify(object);
+
+    try {
+      const res = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json"
+        },
+        body: json,
+      });
+      const data = await res.json();
+      console.log("[Web3Forms Debug]", data);
+      
+      if (data.success) {
+        setStatus("success");
+        form.reset();
+        setTimeout(() => setStatus("idle"), 5000);
+      } else {
+        console.error("[Web3Forms Error]", data.message);
+        setStatus("error");
+      }
+    } catch (e) {
+      setStatus("error");
+      setTimeout(() => setStatus("idle"), 5000);
+    }
+  };
 
   return (
     <section id="contact" className="relative z-20 bg-transparent pt-32 pb-24 px-6 md:px-12 lg:px-24 border-t border-white/5">
@@ -51,25 +89,64 @@ export default function Contact() {
               Let&apos;s build something <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-emerald-400">intelligent.</span>
             </h2>
           </div>
-          <p className="text-xl text-white/70 mb-12 max-w-lg">
-            I&apos;m currently looking for new opportunities and collaborations. My inbox is always open.
+          <p className="text-xl text-white/70 mb-8 max-w-lg">
+            I&apos;m currently looking for new opportunities and collaborations. Fill out the form and I'll get back to you shortly.
           </p>
-          <motion.a
-            href="mailto:dan.abraham1602@gmail.com"
-            whileHover={isLowEnd ? {} : { scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            transition={{ type: "spring", bounce: 0.25, duration: 0.6 }}
-            className={`inline-flex items-center justify-center px-10 py-5 font-bold text-white rounded-full uppercase tracking-widest text-sm ${isLowEnd ? 'bg-[#333]' : 'shadow-[0_0_20px_rgba(255,255,255,0.05)] hover:shadow-[0_0_30px_rgba(255,255,255,0.2)]'}`}
-            style={isLowEnd ? {} : {
-              background: "linear-gradient(135deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0.02) 100%)",
-              backdropFilter: "blur(12px)",
-              WebkitBackdropFilter: "blur(12px)",
-              boxShadow: "inset 0px 2px 4px rgba(255,255,255,0.4), inset 0px -4px 8px rgba(0,0,0,0.1)",
-              border: "1px solid rgba(255,255,255,0.2)",
-            }}
-          >
-            <span className={isLowEnd ? '' : 'mix-blend-screen'}>Say Hello</span>
-          </motion.a>
+          
+          <form onSubmit={handleSubmit} className="flex flex-col gap-4 max-w-lg">
+            <input 
+              type="text" 
+              name="name" 
+              required 
+              placeholder="Your Name" 
+              className={`w-full px-6 py-4 rounded-xl border border-white/10 text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-emerald-400/50 transition-all ${isLowEnd ? 'bg-[#333]' : 'bg-white/5 backdrop-blur-md'}`}
+            />
+            <input 
+              type="email" 
+              name="email" 
+              required 
+              placeholder="Your Email" 
+              className={`w-full px-6 py-4 rounded-xl border border-white/10 text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-emerald-400/50 transition-all ${isLowEnd ? 'bg-[#333]' : 'bg-white/5 backdrop-blur-md'}`}
+            />
+            <textarea 
+              name="message" 
+              required 
+              placeholder="Your Message" 
+              rows={4}
+              className={`w-full px-6 py-4 rounded-xl border border-white/10 text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-emerald-400/50 transition-all resize-none ${isLowEnd ? 'bg-[#333]' : 'bg-white/5 backdrop-blur-md'}`}
+            />
+            
+            <motion.button
+              type="submit"
+              disabled={status === "loading" || status === "success"}
+              whileHover={isLowEnd || status === "loading" || status === "success" ? {} : { scale: 1.02 }}
+              whileTap={status === "loading" || status === "success" ? {} : { scale: 0.98 }}
+              className={`inline-flex items-center justify-center px-10 py-4 font-bold text-white rounded-xl uppercase tracking-widest text-sm mt-2 transition-all ${
+                status === "success" 
+                  ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/50' 
+                  : isLowEnd 
+                    ? 'bg-[#444]' 
+                    : 'shadow-[0_0_20px_rgba(255,255,255,0.05)] hover:shadow-[0_0_30px_rgba(255,255,255,0.2)]'
+              }`}
+              style={status === "success" || isLowEnd ? {} : {
+                background: "linear-gradient(135deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0.02) 100%)",
+                backdropFilter: "blur(12px)",
+                WebkitBackdropFilter: "blur(12px)",
+                boxShadow: "inset 0px 2px 4px rgba(255,255,255,0.4), inset 0px -4px 8px rgba(0,0,0,0.1)",
+                border: "1px solid rgba(255,255,255,0.2)",
+              }}
+            >
+              <span className={status === "success" || isLowEnd ? '' : 'mix-blend-screen'}>
+                {status === "idle" && "Send Message"}
+                {status === "loading" && "Sending..."}
+                {status === "success" && "Message Sent!"}
+                {status === "error" && "Error! Try Again"}
+              </span>
+            </motion.button>
+            {status === "error" && (
+               <p className="text-red-400 text-sm mt-2 text-center">Something went wrong. Please try again or use the email link.</p>
+            )}
+          </form>
         </motion.div>
 
         <motion.div

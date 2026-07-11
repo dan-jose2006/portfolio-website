@@ -9,6 +9,7 @@ import Skills from "@/components/Skills";
 import Projects from "@/components/Projects";
 import Navbar from "@/components/Navbar";
 import Experience from "@/components/Experience";
+import Education from "@/components/Education";
 import Achievements from "@/components/Achievements";
 import Contact from "@/components/Contact";
 import Modal from "@/components/Modal";
@@ -40,6 +41,9 @@ export default function Home() {
         setCertError(false);
         setActiveCert(type);
       }} />
+
+      {/* Education Section */}
+      <Education />
 
       {/* Achievements Section */}
       <Achievements onShowCertificate={(type) => {
