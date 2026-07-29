@@ -50,15 +50,18 @@ const timelineData = [
 export default function Education() {
   const { tier } = usePerformance();
   const isLowEnd = tier === "low";
-  const [now, setNow] = useState(Date.now());
+  const [now, setNow] = useState<number | null>(null);
 
   useEffect(() => {
     // Update 'now' to ensure it uses client's current time for progress calculation
-    setNow(Date.now());
+    const timer = setTimeout(() => {
+      setNow(Date.now());
+    }, 0);
+    return () => clearTimeout(timer);
   }, []);
 
   const calculateProgress = (start?: string, end?: string) => {
-    if (!start || !end) return 0;
+    if (now === null || !start || !end) return 0;
     const startDate = new Date(start).getTime();
     const endDate = new Date(end).getTime();
     

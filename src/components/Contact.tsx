@@ -67,7 +67,7 @@ export default function Contact() {
         console.error("[Web3Forms Error]", data.message);
         setStatus("error");
       }
-    } catch (e) {
+    } catch {
       setStatus("error");
       setTimeout(() => setStatus("idle"), 5000);
     }
@@ -90,7 +90,7 @@ export default function Contact() {
             </h2>
           </div>
           <p className="text-xl text-white/70 mb-8 max-w-lg">
-            I&apos;m currently looking for new opportunities and collaborations. Fill out the form and I'll get back to you shortly.
+            I&apos;m currently looking for new opportunities and collaborations. Fill out the form and I&apos;ll get back to you shortly.
           </p>
           
           <form onSubmit={handleSubmit} className="flex flex-col gap-4 max-w-lg">

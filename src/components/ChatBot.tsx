@@ -14,6 +14,7 @@ export default function ChatBot() {
   const [isOpen, setIsOpen] = useState(false);
   const [hasOpened, setHasOpened] = useState(false);
   const [input, setInput] = useState("");
+  const [isTyping, setIsTyping] = useState(false);
   const [messages, setMessages] = useState<Message[]>([
     { id: "1", sender: "bot", text: "Hi! I'm Nexus, Dan's AI assistant. How can I help you today?" }
   ]);
@@ -25,87 +26,87 @@ export default function ChatBot() {
 
   useEffect(() => {
     scrollToBottom();
-  }, [messages]);
+  }, [messages, isTyping]);
 
-  const handleSend = () => {
-    if (!input.trim()) return;
+  const handleSend = async () => {
+    if (!input.trim() || isTyping) return;
 
-    const userMsg: Message = { id: Date.now().toString(), sender: "user", text: input };
+    const userMsgText = input;
+    const userMsg: Message = { id: Date.now().toString(), sender: "user", text: userMsgText };
     setMessages(prev => [...prev, userMsg]);
     setInput("");
+    setIsTyping(true);
 
-    setTimeout(() => {
-      // Advanced Intent Matching Logic
-      let botResponse = "";
-      const lowerInput = userMsg.text.toLowerCase();
+    try {
+      const history = messages
+        .filter(m => m.id !== "1")
+        .map(m => ({
+          role: m.sender === "user" ? "user" : "assistant",
+          content: m.text
+        }));
 
-      const intents = [
-        {
-          keywords: ["skill", "tech", "stack", "language", "framework", "tool", "know", "use", "program", "code", "coding", "can you do"],
-          response: "Dan is an AI/ML Engineer specializing in Python, TensorFlow, React, and Next.js. He bridges the gap between complex machine learning models and beautiful web interfaces!"
-        },
-        {
-          keywords: ["experience", "work", "job", "intern", "l&t", "larsen", "toubro", "career", "history", "employed", "christ", "incubation", "cic", "founder"],
-          response: "Dan is currently a Pre-Incubatee / Co-Founder at the CHRIST Incubation Centre (CIC), building innovative products! He also worked as an AI/ML Intern at Larsen & Toubro EduTech, where he built intelligent enterprise systems."
-        },
-        {
-          keywords: ["achievements", "certifications", "awards", "yesummit", "recognized", "won"],
-          response: "Dan was recognized at the National YESummit 2026 and the Karnataka State YESummit 2025 for his active involvement in entrepreneurial innovation! You can see his certificates in the Achievements section."
-        },
-        {
-          keywords: ["project", "build", "create", "made", "portfolio", "github", "showcase", "done"],
-          response: "Dan has built several impressive projects! You can check out the Projects section above to see his AI applications and full-stack web builds."
-        },
-        {
-          keywords: ["contact", "hire", "email", "reach", "touch", "message", "call", "talk", "connect"],
-          response: "You can reach Dan directly at dan.abraham1602@gmail.com, or through his LinkedIn linked above. His inbox is always open for exciting opportunities!"
-        },
-        {
-          keywords: ["education", "study", "college", "school", "degree", "btech", "university", "graduate"],
-          response: "Dan is currently pursuing his BTech, specializing in Artificial Intelligence and Machine Learning. He's passionate about continuous learning."
-        },
-        {
-          keywords: ["about", "who is dan", "background", "bio", "tell me about"],
-          response: "Dan Abraham Jose is a passionate AI/ML Engineer who loves combining artificial intelligence with modern, interactive web development."
-        },
-        {
-          keywords: ["name", "who are you", "what are you", "bot", "ai", "nexus", "assistant"],
-          response: "I'm Nexus, a custom AI assistant built specifically for Dan's portfolio. I'm here to answer your questions about him!"
-        },
-        {
-          keywords: ["hello", "hi", "hey", "greetings", "sup", "yo", "morning", "evening"],
-          response: "Hello there! I'm Nexus. What would you like to know about Dan?"
-        },
-        {
-          keywords: ["thank", "thanks", "appreciate", "good job", "cool", "awesome"],
-          response: "You're welcome! Let me know if you need anything else."
-        },
-        {
-          keywords: ["resume", "cv", "download", "document"],
-          response: "You can download Dan's resume by clicking the glowing 'Resume' button in the navigation bar!"
-        }
-      ];
+      history.push({ role: "user", content: userMsgText });
 
-      // Find the first matching intent
-      for (const intent of intents) {
-        if (intent.keywords.some(k => lowerInput.includes(k))) {
-          botResponse = intent.response;
-          break;
-        }
-      }
+      const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${process.env.NEXT_PUBLIC_GROQ_API_KEY}`
+        },
+        body: JSON.stringify({
+          model: "llama-3.3-70b-versatile",
+          messages: [
+            {
+              role: "system",
+              content: `You are Nexus, a professional and friendly AI assistant for Dan Abraham Jose's personal portfolio website. Your goal is to answer visitor questions about Dan, his projects, skills, education, and experience.
 
-      // Dynamic Fallback
-      if (!botResponse) {
-        const fallbacks = [
-          "I'm a simple bot and didn't quite catch that. Try asking about Dan's skills, projects, or experience!",
-          "Hmm, I'm not sure. You can ask me things like 'What are Dan's skills?' or 'How do I contact him?'",
-          "My AI circuits are still training on that one! Want to know about Dan's tech stack or internship instead?"
-        ];
-        botResponse = fallbacks[Math.floor(Math.random() * fallbacks.length)];
-      }
-      
-      setMessages(prev => [...prev, { id: (Date.now() + 1).toString(), sender: "bot", text: botResponse }]);
-    }, 600);
+Here is all the information about Dan you should use:
+- About Him: Dan Abraham Jose is an AI/ML Engineer who loves building intelligent systems and highly polished, interactive web applications.
+- Current Status: 3rd Year B.Tech student in Artificial Intelligence and Machine Learning (2026-2027) at Christ (Deemed to be University), Kengeri Campus, working on enterprise AI projects. Co-founder / Pre-incubatee at CHRIST Incubation Centre (CIC).
+- Education Background:
+  - B.Tech in AI & ML: Christ (Deemed to be University), Kengeri Campus.
+  - Pre-University (PUC): St. Joseph's HSS, Peravoor.
+  - High School: Navajothy English Medium School.
+- Tech Stack: Python, TensorFlow, PyTorch, OpenCV, Scikit-Learn, Next.js, React, Node.js, FastAPI, n8n, Supabase, TailwindCSS, Git.
+- Professional Experience:
+  1. AI/ML Internship at Larsen & Toubro (L&T) EduTech (April - May 2026, Chennai): Designed enterprise ML applications and system-level pipelines.
+  2. Co-Founder / Pre-Incubatee at CHRIST Incubation Centre (CIC): Directing development of novel startups and software prototypes.
+- Key Projects:
+  1. CampusFlow: AI-powered student productivity app with n8n deadline tracking, WhatsApp notifications, and Google Calendar sync. Won 1st Prize at UNLOX Codestorm Hackathon.
+  2. FanFlow AI: Football event management platform, volunteer routing, stadium guides, real-time queues. Built for FIFA fans and Groq-powered helper assistant.
+  3. AMA System: Content generation workflow and digital assets workspace dashboard.
+  4. 6-Bubble Puzzle Simulator: Mathematical logic React web game with particle effects.
+  5. JARVIS AI Assistant: Voice-controlled local LLM assistant utilizing Ollama (Whisper/Python) for offline commands.
+  6. Facial Emotion Detection: Convolutional Neural Network (CNN) emotion predictor model running on webcams.
+  7. DCD Detection ML Model: Early health classifier model for Developmental Coordination Disorder (DCD).
+  8. Kinetic Gym Energy: Sustainability IoT prototype mapping mechanical gym motions to electrical outputs with a React dashboard.
+- Achievements: Awarded at National YESummit 2026 and Karnataka State YESummit 2025 for pioneering entrepreneurial ideas.
+- Contact Details:
+  - Email: dan.abraham1602@gmail.com
+  - LinkedIn & GitHub links are available on the page.
+  - Resume is available via the 'Resume' download button at the top navbar.
+
+Instructions:
+1. Always remain polite, enthusiastic, and represent Dan in a positive light.
+2. Keep your answers clear, concise, and direct (max 2-3 sentences where possible).
+3. If asked questions unrelated to Dan, his career, or skills, politely redirect the focus back to him.`
+            },
+            ...history
+          ],
+          temperature: 0.7,
+          max_tokens: 250
+        })
+      });
+
+      const data = await response.json();
+      const botText = data?.choices?.[0]?.message?.content || "Sorry, my neural connection is experiencing issues. Please try again shortly!";
+      setMessages(prev => [...prev, { id: Date.now().toString(), sender: "bot", text: botText }]);
+    } catch (err) {
+      console.error("Groq API error:", err);
+      setMessages(prev => [...prev, { id: Date.now().toString(), sender: "bot", text: "Sorry, I'm having trouble connecting to my brain. Please check your network or try again later." }]);
+    } finally {
+      setIsTyping(false);
+    }
   };
 
   return (
@@ -152,6 +153,15 @@ export default function ChatBot() {
                   </div>
                 </div>
               ))}
+              {isTyping && (
+                <div className="flex justify-start">
+                  <div className="bg-white/5 text-white/60 border border-white/5 rounded-2xl rounded-tl-sm p-3 text-xs flex items-center gap-1.5">
+                    <span className="w-1.5 h-1.5 rounded-full bg-white/40 animate-bounce" style={{ animationDelay: "0ms" }} />
+                    <span className="w-1.5 h-1.5 rounded-full bg-white/40 animate-bounce" style={{ animationDelay: "150ms" }} />
+                    <span className="w-1.5 h-1.5 rounded-full bg-white/40 animate-bounce" style={{ animationDelay: "300ms" }} />
+                  </div>
+                </div>
+              )}
               <div ref={messagesEndRef} />
             </div>
 
