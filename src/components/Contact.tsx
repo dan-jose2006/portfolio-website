@@ -74,7 +74,7 @@ export default function Contact() {
   };
 
   return (
-    <section id="contact" className="relative z-20 bg-transparent pt-32 pb-24 px-6 md:px-12 lg:px-24 border-t border-white/5">
+    <section id="contact" className="relative z-20 bg-transparent pt-16 pb-16 md:pt-32 md:pb-24 px-6 md:px-12 lg:px-24 border-t border-white/5">
       <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-16">
 
         <motion.div
@@ -198,7 +198,7 @@ export default function Contact() {
 
       </div>
 
-      <div className="mt-32 pt-8 border-t border-white/10 flex flex-col items-center justify-center text-center">
+      <div className="mt-16 md:mt-32 pt-8 border-t border-white/10 flex flex-col items-center justify-center text-center">
         <p className="text-white/40 text-sm tracking-wide">
           &copy; {new Date().getFullYear()} Dan Abraham Jose. All rights reserved.
         </p>

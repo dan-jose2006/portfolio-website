@@ -13,7 +13,7 @@ export default function Experience({ onShowCertificate }: ExperienceProps) {
   const isLowEnd = tier === "low";
 
   return (
-    <section id="experience" className="relative z-20 bg-transparent pt-32 pb-16 px-6 md:px-12 lg:px-24">
+    <section id="experience" className="relative z-20 bg-transparent pt-16 md:pt-32 pb-16 px-6 md:px-12 lg:px-24">
       <div className="max-w-7xl mx-auto flex flex-col md:flex-row gap-16 items-start">
 
         <motion.div
@@ -26,7 +26,7 @@ export default function Experience({ onShowCertificate }: ExperienceProps) {
           <h3 className="text-sm font-medium text-emerald-400 uppercase tracking-widest mb-4">
             Professional Experience
           </h3>
-          <h2 className="text-4xl md:text-5xl font-bold text-white tracking-tight leading-tight">
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white tracking-tight leading-tight">
             Building enterprise-scale AI solutions.
           </h2>
         </motion.div>

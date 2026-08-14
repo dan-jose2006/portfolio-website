@@ -99,11 +99,23 @@ Instructions:
       });
 
       const data = await response.json();
-      const botText = data?.choices?.[0]?.message?.content || "Sorry, my neural connection is experiencing issues. Please try again shortly!";
+
+      if (!response.ok) {
+        const errMsg = data?.error?.message || `API error ${response.status}`;
+        console.error("Groq API error response:", data);
+        throw new Error(errMsg);
+      }
+
+      const botText = data?.choices?.[0]?.message?.content?.trim();
+      if (!botText) {
+        console.error("Unexpected Groq response shape:", data);
+        throw new Error("Empty response from AI");
+      }
       setMessages(prev => [...prev, { id: Date.now().toString(), sender: "bot", text: botText }]);
     } catch (err) {
       console.error("Groq API error:", err);
-      setMessages(prev => [...prev, { id: Date.now().toString(), sender: "bot", text: "Sorry, I'm having trouble connecting to my brain. Please check your network or try again later." }]);
+      const errDetail = err instanceof Error ? err.message : "Unknown error";
+      setMessages(prev => [...prev, { id: Date.now().toString(), sender: "bot", text: `⚠️ ${errDetail}. Please try again shortly!` }]);
     } finally {
       setIsTyping(false);
     }

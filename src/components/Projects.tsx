@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowUpRight, X, ExternalLink, Trophy } from "lucide-react";
+import { ArrowUpRight, ExternalLink, Trophy } from "lucide-react";
 import { usePerformance } from "@/context/PerformanceContext";
 
 interface ProjectItem {
@@ -108,7 +108,7 @@ export default function Projects() {
   const currentProjects = activeTab === "featured" ? PROJECTS : ORIGINAL_PROJECTS;
 
   return (
-    <section className="relative z-20 bg-transparent py-32 px-6 md:px-12 lg:px-24">
+    <section className="relative z-20 bg-transparent py-16 md:py-32 px-6 md:px-12 lg:px-24">
       {/* Background ambient glow */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-emerald-950/10 blur-[150px] rounded-full pointer-events-none" />
 
@@ -121,7 +121,7 @@ export default function Projects() {
           className="mb-12"
         >
           <div className="w-20 h-1 bg-gradient-to-r from-emerald-400 to-blue-500 mb-8 rounded-full" />
-          <h3 className="text-4xl md:text-5xl font-bold text-white tracking-tight">
+          <h3 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white tracking-tight">
             Selected Works
           </h3>
           <p className="text-white/50 text-lg mt-4 max-w-2xl">
