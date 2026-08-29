@@ -136,10 +136,8 @@ export default function ScrollyCanvas() {
     const handleResize = () => {
       if (canvasRef.current) {
         const isMobile = window.innerWidth < 768;
-        // On mobile, aggressively downscale the internal rendering resolution.
-        // A DPR of 0.75 renders internally smaller and lets CSS scale it up. 
-        // This stops the mobile GPU from choking on massive texture uploads.
-        const maxDpr = isMobile ? 0.75 : 2.5;
+        // On mobile, render at DPR 1.0 to avoid mobile GPU memory stalls while preserving crispness
+        const maxDpr = isMobile ? 1.0 : 2.0;
         const dpr = Math.min(window.devicePixelRatio || 1, maxDpr);
 
         canvasRef.current.width = window.innerWidth * dpr;
@@ -160,7 +158,7 @@ export default function ScrollyCanvas() {
 
   return (
     <div ref={containerRef} className="relative h-[500vh] w-full bg-[#121212]">
-      <div className="sticky top-0 h-screen w-full overflow-hidden">
+      <div className="sticky top-0 h-screen w-full overflow-hidden flex items-center justify-center">
         <AnimatePresence>
           {imagesLoaded < FRAME_COUNT && (
             <motion.div
@@ -183,7 +181,8 @@ export default function ScrollyCanvas() {
         </AnimatePresence>
         <canvas
           ref={canvasRef}
-          className="block h-full w-full"
+          className="block w-full h-full object-cover"
+          style={{ width: "100%", height: "100%" }}
         />
       </div>
     </div>

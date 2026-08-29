@@ -72,7 +72,7 @@ export default function Education() {
   };
 
   return (
-    <section id="education" className="relative z-20 bg-transparent py-16 px-6 md:px-12 lg:px-24">
+    <section id="education" className="relative z-20 bg-transparent py-16 px-6 md:px-12 lg:px-24 overflow-hidden">
       <div className="max-w-4xl mx-auto">
         
         <motion.div

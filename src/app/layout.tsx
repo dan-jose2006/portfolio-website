@@ -66,10 +66,10 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
       </head>
-      <body className="min-h-full flex flex-col relative bg-[#121212]">
+      <body className="min-h-full w-full max-w-full overflow-x-hidden flex flex-col relative bg-[#121212]">
         <PerformanceProvider>
           <Starfield />
-          <div className="relative z-10 flex flex-col flex-grow">
+          <div className="relative z-10 flex flex-col flex-grow w-full max-w-full overflow-x-hidden">
             {children}
           </div>
           <Analytics />

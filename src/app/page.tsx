@@ -21,12 +21,12 @@ export default function Home() {
   const [certError, setCertError] = useState(false);
 
   return (
-    <main className="bg-transparent min-h-screen selection:bg-emerald-400 selection:text-[#121212]">
+    <main className="bg-transparent min-h-screen w-full max-w-full overflow-x-hidden selection:bg-emerald-400 selection:text-[#121212]">
       {/* Top Navigation */}
       <Navbar />
 
       {/* Scroll-Linked Animation Section */}
-      <section className="relative w-full">
+      <section className="relative w-full overflow-hidden">
         <ScrollyCanvas />
         <Overlay />
       </section>

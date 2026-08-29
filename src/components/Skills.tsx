@@ -17,7 +17,7 @@ export default function Skills() {
   const isLowEnd = tier === "low";
 
   return (
-    <section id="skills" className="relative z-20 bg-transparent pt-16 pb-16 md:pt-24 md:pb-32 px-6 md:px-12 lg:px-24">
+    <section id="skills" className="relative z-20 bg-transparent pt-16 pb-16 md:pt-24 md:pb-32 px-6 md:px-12 lg:px-24 overflow-hidden">
       <div className="max-w-7xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 50 }}

@@ -66,7 +66,7 @@ export default function Certifications({ onShowCertificate }: CertificationsProp
   const isLowEnd = tier === "low";
 
   return (
-    <section id="certifications" className="relative z-20 bg-transparent py-16 md:py-24 px-6 md:px-12 lg:px-24">
+    <section id="certifications" className="relative z-20 bg-transparent py-16 md:py-24 px-6 md:px-12 lg:px-24 overflow-hidden">
       {/* Background ambient glow */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] bg-emerald-950/15 blur-[160px] rounded-full pointer-events-none" />
 

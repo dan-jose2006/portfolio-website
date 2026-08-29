@@ -27,7 +27,7 @@ export default function Navbar() {
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.8, ease: "easeOut" }}
-          className={`text-white font-bold text-lg md:text-xl tracking-tight pointer-events-auto truncate max-w-[120px] sm:max-w-none ${isLowEnd ? '' : 'drop-shadow-md'}`}
+          className={`text-white font-bold text-base sm:text-lg md:text-xl tracking-tight pointer-events-auto whitespace-nowrap ${isLowEnd ? '' : 'drop-shadow-md'}`}
         >
           Dan Abraham Jose
         </motion.div>

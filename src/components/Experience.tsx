@@ -13,7 +13,7 @@ export default function Experience({ onShowCertificate }: ExperienceProps) {
   const isLowEnd = tier === "low";
 
   return (
-    <section id="experience" className="relative z-20 bg-transparent pt-16 md:pt-32 pb-16 px-6 md:px-12 lg:px-24">
+    <section id="experience" className="relative z-20 bg-transparent pt-16 md:pt-32 pb-16 px-6 md:px-12 lg:px-24 overflow-hidden">
       <div className="max-w-7xl mx-auto flex flex-col md:flex-row gap-12 md:gap-16 items-start">
 
         <motion.div

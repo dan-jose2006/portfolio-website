@@ -74,7 +74,7 @@ export default function Contact() {
   };
 
   return (
-    <section id="contact" className="relative z-20 bg-transparent pt-16 pb-16 md:pt-32 md:pb-24 px-6 md:px-12 lg:px-24 border-t border-white/5">
+    <section id="contact" className="relative z-20 bg-transparent pt-16 pb-16 md:pt-32 md:pb-24 px-6 md:px-12 lg:px-24 border-t border-white/5 overflow-hidden">
       <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-16">
 
         <motion.div
