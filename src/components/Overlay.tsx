@@ -39,10 +39,10 @@ export default function Overlay() {
             animate={{ opacity: 1, y: 0, scale: 1, filter: "blur(0px)" }}
             transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
           >
-            <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold tracking-tighter text-white drop-shadow-2xl">
+            <h1 className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-bold tracking-tighter text-white drop-shadow-2xl">
               Dan Abraham Jose.
             </h1>
-            <p className="mt-6 text-xl md:text-2xl text-white/80 font-light tracking-wide">
+            <p className="mt-4 sm:mt-6 text-lg sm:text-xl md:text-2xl text-white/80 font-light tracking-wide">
               AI/ML Engineer & Student.
             </p>
           </motion.div>
@@ -50,18 +50,18 @@ export default function Overlay() {
 
         <motion.div
           style={{ opacity: opacity2, y: y2 }}
-          className="absolute w-full px-10 md:px-32 flex justify-start"
+          className="absolute w-full px-6 sm:px-12 md:px-32 flex justify-start"
         >
-          <h2 className="text-4xl md:text-6xl lg:text-7xl font-semibold text-white max-w-2xl drop-shadow-2xl leading-tight">
+          <h2 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-semibold text-white max-w-2xl drop-shadow-2xl leading-tight">
             I build intelligent <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-emerald-400">systems.</span>
           </h2>
         </motion.div>
 
         <motion.div
           style={{ opacity: opacity3, y: y3 }}
-          className="absolute w-full px-10 md:px-32 flex justify-end text-right"
+          className="absolute w-full px-6 sm:px-12 md:px-32 flex justify-end text-right"
         >
-          <h2 className="text-4xl md:text-6xl lg:text-7xl font-semibold text-white max-w-2xl drop-shadow-2xl leading-tight">
+          <h2 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-semibold text-white max-w-2xl drop-shadow-2xl leading-tight">
             Bridging ML and <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-400">automation.</span>
           </h2>
         </motion.div>

@@ -11,12 +11,13 @@ import Navbar from "@/components/Navbar";
 import Experience from "@/components/Experience";
 import Education from "@/components/Education";
 import Achievements from "@/components/Achievements";
+import Certifications, { CertType } from "@/components/Certifications";
 import Contact from "@/components/Contact";
 import Modal from "@/components/Modal";
 import ChatBot from "@/components/ChatBot";
 
 export default function Home() {
-  const [activeCert, setActiveCert] = useState<'lnt' | 'christ' | 'yesummit-2025' | 'yesummit-2026' | 'unlox-hackathon' | null>(null);
+  const [activeCert, setActiveCert] = useState<CertType | null>(null);
   const [certError, setCertError] = useState(false);
 
   return (
@@ -51,6 +52,12 @@ export default function Home() {
         setActiveCert(type);
       }} />
 
+      {/* Professional Certifications Section */}
+      <Certifications onShowCertificate={(type) => {
+        setCertError(false);
+        setActiveCert(type);
+      }} />
+
       {/* Projects Grid Section */}
       <div id="projects">
         <Projects />
@@ -63,16 +70,27 @@ export default function Home() {
       <Modal isOpen={activeCert !== null} onClose={() => setActiveCert(null)}>
         <div className="p-2 w-full">
           {!certError && activeCert ? (
-            <div className="relative w-full h-[60vh] md:h-[80vh]">
+            <div className="relative w-full h-[50vh] sm:h-[65vh] md:h-[75vh] lg:h-[80vh]">
               <Image
                 src={
                   activeCert === 'lnt' ? "/certificate.png" : 
                   activeCert === 'christ' ? "/christ-certificate.jpeg" :
                   activeCert === 'yesummit-2025' ? "/yesummit-2025-v2.jpeg" :
                   activeCert === 'unlox-hackathon' ? "/unlox-hackathon.jpeg" :
+                  activeCert === 'promptwars' ? "/promptwars-certificate.png" :
+                  activeCert === 'aws-cloud' ? "/aws-cloud-certificate.png" :
+                  activeCert === 'lnt-frontend' ? "/lnt-frontend-certificate.png" :
+                  activeCert === 'infosys-se' ? "/infosys-se-certificate.png" :
                   "/yesummit-2026-v2.jpeg"
                 }
-                alt={activeCert === 'unlox-hackathon' ? "Unlox Hackathon Trophy" : `${activeCert} Certificate`}
+                alt={
+                  activeCert === 'unlox-hackathon' ? "Unlox Hackathon Trophy" : 
+                  activeCert === 'promptwars' ? "PromptWars Certificate" :
+                  activeCert === 'aws-cloud' ? "AWS Academy Graduate Certificate" :
+                  activeCert === 'lnt-frontend' ? "L&T EduTech Front End Developer Certificate" :
+                  activeCert === 'infosys-se' ? "Infosys Springboard Software Engineering Certificate" :
+                  `${activeCert} Certificate`
+                }
                 fill
                 className="object-contain rounded-xl"
                 onError={() => setCertError(true)}
@@ -90,6 +108,14 @@ export default function Home() {
                   ? "Please place your YESummit 2025 certificate image in the `public` folder and name it <b>yesummit-2025-v2.jpeg</b> to see it here."
                   : activeCert === 'unlox-hackathon'
                   ? "Please place your Unlox Hackathon image in the `public` folder and name it <b>unlox-hackathon.jpeg</b> to see it here."
+                  : activeCert === 'promptwars'
+                  ? "Please place your PromptWars certificate image in the `public` folder and name it <b>promptwars-certificate.png</b> to see it here."
+                  : activeCert === 'aws-cloud'
+                  ? "Please place your AWS Academy certificate image in the `public` folder and name it <b>aws-cloud-certificate.png</b> to see it here."
+                  : activeCert === 'lnt-frontend'
+                  ? "Please place your L&T Front End certificate image in the `public` folder and name it <b>lnt-frontend-certificate.png</b> to see it here."
+                  : activeCert === 'infosys-se'
+                  ? "Please place your Infosys Springboard certificate image in the `public` folder and name it <b>infosys-se-certificate.png</b> to see it here."
                   : "Please place your YESummit 2026 certificate image in the `public` folder and name it <b>yesummit-2026-v2.jpeg</b> to see it here."}
               </p>
             </div>

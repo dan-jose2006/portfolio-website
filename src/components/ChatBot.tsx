@@ -73,14 +73,22 @@ Here is all the information about Dan you should use:
   2. Co-Founder / Pre-Incubatee at CHRIST Incubation Centre (CIC): Directing development of novel startups and software prototypes.
 - Key Projects:
   1. CampusFlow: AI-powered student productivity app with n8n deadline tracking, WhatsApp notifications, and Google Calendar sync. Won 1st Prize at UNLOX Codestorm Hackathon.
-  2. FanFlow AI: Football event management platform, volunteer routing, stadium guides, real-time queues. Built for FIFA fans and Groq-powered helper assistant.
+  2. FanFlow AI: Football event management platform, volunteer routing, stadium guides, real-time queues. Built for FIFA fans and Groq-powered helper assistant. Secured Top 400 rank out of 40,000+ global participants in PromptWars Virtual Hackathon (Google for Developers & Hack2Skill).
   3. AMA System: Content generation workflow and digital assets workspace dashboard.
   4. 6-Bubble Puzzle Simulator: Mathematical logic React web game with particle effects.
   5. JARVIS AI Assistant: Voice-controlled local LLM assistant utilizing Ollama (Whisper/Python) for offline commands.
   6. Facial Emotion Detection: Convolutional Neural Network (CNN) emotion predictor model running on webcams.
   7. DCD Detection ML Model: Early health classifier model for Developmental Coordination Disorder (DCD).
   8. Kinetic Gym Energy: Sustainability IoT prototype mapping mechanical gym motions to electrical outputs with a React dashboard.
-- Achievements: Awarded at National YESummit 2026 and Karnataka State YESummit 2025 for pioneering entrepreneurial ideas.
+- Achievements & Awards:
+  1. 1st Prize Winner – UNLOX Hackathon (June 2026, ₹10,000 cash prize).
+  2. Top 400 Leaderboard – PromptWars Virtual Hackathon (August 2026, out of 40,000+ participants, Google for Developers & Hack2Skill).
+  3. National YESummit 2026 – Recognized for entrepreneurial innovation and leadership.
+  4. Karnataka State YESummit 2025 – Recognized for innovative thinking and startup initiatives.
+- Professional Certifications:
+  1. AWS Academy Graduate: Cloud Foundations (August 2026, Credly digital badge, 20 hours cloud architecture & security).
+  2. L&T EduTech: Front end UI and UX Developer (First Class, CollegeConnect Programme).
+  3. Infosys Springboard: Software Engineering (July 2026, SDLC, Agile, testing, and modern architecture).
 - Contact Details:
   - Email: dan.abraham1602@gmail.com
   - LinkedIn & GitHub links are available on the page.
@@ -122,7 +130,7 @@ Instructions:
   };
 
   return (
-    <div className="fixed bottom-6 right-6 z-[100] flex flex-col items-end pointer-events-none">
+    <div className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-[100] flex flex-col items-end pointer-events-none max-w-[calc(100vw-2rem)]">
       
       {/* Chat Window */}
       <AnimatePresence>
@@ -132,31 +140,31 @@ Instructions:
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.95 }}
             transition={{ duration: 0.3 }}
-            className="pointer-events-auto w-80 md:w-96 h-[500px] max-h-[80vh] bg-[#1a1a1a]/90 backdrop-blur-2xl border border-white/10 rounded-2xl shadow-2xl flex flex-col overflow-hidden mb-4 relative"
+            className="pointer-events-auto w-[calc(100vw-2rem)] sm:w-80 md:w-96 h-[480px] max-h-[75vh] sm:max-h-[80vh] bg-[#1a1a1a]/95 backdrop-blur-2xl border border-white/10 rounded-2xl shadow-2xl flex flex-col overflow-hidden mb-3 sm:mb-4 relative"
           >
             {/* Header */}
-            <div className="p-4 border-b border-white/10 bg-black/40 flex items-center justify-between">
+            <div className="p-3.5 sm:p-4 border-b border-white/10 bg-black/40 flex items-center justify-between">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 relative bg-emerald-900/30 rounded-full border border-emerald-500/30 overflow-hidden flex items-center justify-center">
+                <div className="w-9 h-9 sm:w-10 sm:h-10 relative bg-emerald-900/30 rounded-full border border-emerald-500/30 overflow-hidden flex items-center justify-center">
                   <video src="/walking-robot.mp4" autoPlay loop muted playsInline className="w-full h-full object-cover scale-[1.2]" />
                 </div>
                 <div>
                   <h3 className="text-white font-bold text-sm">Nexus Assistant</h3>
-                  <p className="text-emerald-400 text-xs flex items-center gap-1">
+                  <p className="text-emerald-400 text-[11px] sm:text-xs flex items-center gap-1">
                     <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" /> Online
                   </p>
                 </div>
               </div>
-              <button onClick={() => setIsOpen(false)} className="text-white/60 hover:text-white transition-colors">
+              <button onClick={() => setIsOpen(false)} className="text-white/60 hover:text-white transition-colors p-1.5 rounded-lg hover:bg-white/5">
                 <X className="w-5 h-5" />
               </button>
             </div>
 
             {/* Messages */}
-            <div className="flex-1 overflow-y-auto p-4 flex flex-col gap-4">
+            <div className="flex-1 overflow-y-auto p-3.5 sm:p-4 flex flex-col gap-3.5 sm:gap-4">
               {messages.map(msg => (
                 <div key={msg.id} className={`flex ${msg.sender === "user" ? "justify-end" : "justify-start"}`}>
-                  <div className={`max-w-[80%] p-3 rounded-2xl text-sm ${
+                  <div className={`max-w-[85%] sm:max-w-[80%] p-3 rounded-2xl text-xs sm:text-sm leading-relaxed ${
                     msg.sender === "user" 
                       ? "bg-emerald-500/20 text-white border border-emerald-500/20 rounded-tr-sm" 
                       : "bg-white/5 text-white/90 border border-white/5 rounded-tl-sm"
@@ -178,7 +186,7 @@ Instructions:
             </div>
 
             {/* Input */}
-            <div className="p-4 border-t border-white/10 bg-black/40">
+            <div className="p-3 sm:p-4 border-t border-white/10 bg-black/40">
               <div className="relative">
                 <input
                   type="text"
@@ -186,13 +194,13 @@ Instructions:
                   onChange={(e) => setInput(e.target.value)}
                   onKeyDown={(e) => e.key === "Enter" && handleSend()}
                   placeholder="Ask Nexus anything..."
-                  className="w-full bg-white/5 border border-white/10 rounded-full py-3 pl-4 pr-12 text-sm text-white placeholder:text-white/40 focus:outline-none focus:border-emerald-500/50 transition-colors"
+                  className="w-full bg-white/5 border border-white/10 rounded-full py-2.5 sm:py-3 pl-4 pr-11 text-xs sm:text-sm text-white placeholder:text-white/40 focus:outline-none focus:border-emerald-500/50 transition-colors"
                 />
                 <button 
                   onClick={handleSend}
-                  className="absolute right-2 top-1/2 -translate-y-1/2 p-2 bg-emerald-500/20 hover:bg-emerald-500/40 text-emerald-400 rounded-full transition-colors"
+                  className="absolute right-1.5 sm:right-2 top-1/2 -translate-y-1/2 p-1.5 sm:p-2 bg-emerald-500/20 hover:bg-emerald-500/40 text-emerald-400 rounded-full transition-colors"
                 >
-                  <Send className="w-4 h-4" />
+                  <Send className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                 </button>
               </div>
             </div>
@@ -201,7 +209,7 @@ Instructions:
       </AnimatePresence>
 
       {/* Floating Toggle Button & Initial Pop-up */}
-      <div className="pointer-events-auto flex items-end gap-4">
+      <div className="pointer-events-auto flex items-end gap-2.5 sm:gap-4 max-w-full">
         
         {/* Initial Pop-up Bubble */}
         <AnimatePresence>
@@ -211,13 +219,13 @@ Instructions:
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: 20 }}
               transition={{ delay: 2, duration: 0.5 }}
-              className="bg-emerald-500/10 backdrop-blur-md border border-emerald-500/20 text-emerald-400 text-sm font-medium py-2 px-4 rounded-2xl rounded-br-sm shadow-lg cursor-pointer hover:bg-emerald-500/20 transition-colors"
+              className="bg-emerald-500/10 backdrop-blur-md border border-emerald-500/20 text-emerald-400 text-xs sm:text-sm font-medium py-2 px-3.5 sm:px-4 rounded-2xl rounded-br-sm shadow-lg cursor-pointer hover:bg-emerald-500/20 transition-colors max-w-[200px] sm:max-w-none"
               onClick={() => {
                 setIsOpen(true);
                 setHasOpened(true);
               }}
             >
-              Hi, I&apos;m Nexus! Ask me any questions 👋
+              Hi, I&apos;m Nexus! Ask me anything 👋
             </motion.div>
           )}
         </AnimatePresence>
@@ -228,12 +236,12 @@ Instructions:
             setIsOpen(!isOpen);
             setHasOpened(true);
           }}
-          className={`w-16 h-16 rounded-full flex items-center justify-center transition-all duration-500 shadow-2xl relative ${
+          className={`w-14 h-14 sm:w-16 sm:h-16 rounded-full flex items-center justify-center transition-all duration-500 shadow-2xl relative shrink-0 ${
             isOpen ? "bg-[#1a1a1a] border border-white/10" : "bg-emerald-900/30 border border-emerald-500/30 hover:scale-110 hover:shadow-[0_0_30px_rgba(52,211,153,0.3)]"
           }`}
         >
           {isOpen ? (
-            <X className="w-6 h-6 text-white" />
+            <X className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
           ) : (
             <div className="relative w-full h-full flex items-center justify-center">
               {/* Glowing portal effect */}

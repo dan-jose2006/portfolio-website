@@ -58,7 +58,7 @@ export default function Modal({ isOpen, onClose, children }: ModalProps) {
   return (
     <AnimatePresence>
       {isOpen && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 md:p-12" style={isLowEnd ? {} : { perspective: "2000px" }}>
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-3 sm:p-6 md:p-12" style={isLowEnd ? {} : { perspective: "2000px" }}>
           <motion.div
             initial={{ opacity: 0, backdropFilter: "blur(0px)", backgroundColor: "rgba(0,0,0,0)" }}
             animate={{ opacity: 1, backdropFilter: isLowEnd ? "none" : "blur(20px)", backgroundColor: isLowEnd ? "rgba(0,0,0,0.9)" : "rgba(0,0,0,0.6)" }}
@@ -75,9 +75,10 @@ export default function Modal({ isOpen, onClose, children }: ModalProps) {
             exit={{ opacity: 0, scale: 0 }}
             transition={{ type: "spring", delay: 0.2 }}
             onClick={onClose}
-            className={`absolute top-6 right-6 md:top-10 md:right-10 p-4 hover:bg-white/20 border border-white/20 rounded-full text-white transition-all duration-300 z-[110] shadow-2xl hover:scale-110 active:scale-95 ${isLowEnd ? 'bg-[#333]' : 'bg-white/10 backdrop-blur-md'}`}
+            className={`absolute top-4 right-4 sm:top-6 sm:right-6 md:top-10 md:right-10 p-3 sm:p-4 hover:bg-white/20 border border-white/20 rounded-full text-white transition-all duration-300 z-[110] shadow-2xl hover:scale-110 active:scale-95 ${isLowEnd ? 'bg-[#333]' : 'bg-white/10 backdrop-blur-md'}`}
+            aria-label="Close modal"
           >
-            <X className="w-6 h-6" />
+            <X className="w-5 h-5 sm:w-6 sm:h-6" />
           </motion.button>
           
           <motion.div

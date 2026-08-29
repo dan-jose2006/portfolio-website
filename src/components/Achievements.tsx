@@ -5,7 +5,7 @@ import { ArrowUpRight, Trophy } from "lucide-react";
 import { usePerformance } from "@/context/PerformanceContext";
 
 interface AchievementsProps {
-  onShowCertificate: (type: 'unlox-hackathon' | 'yesummit-2025' | 'yesummit-2026') => void;
+  onShowCertificate: (type: 'unlox-hackathon' | 'yesummit-2025' | 'yesummit-2026' | 'promptwars') => void;
 }
 
 export default function Achievements({ onShowCertificate }: AchievementsProps) {
@@ -13,8 +13,8 @@ export default function Achievements({ onShowCertificate }: AchievementsProps) {
   const isLowEnd = tier === "low";
 
   return (
-    <section id="achievements" className="relative z-20 bg-transparent pt-16 pb-16 px-6 md:px-12 lg:px-24">
-      <div className="max-w-7xl mx-auto flex flex-col md:flex-row gap-16 items-start">
+    <section id="achievements" className="relative z-20 bg-transparent py-16 md:py-24 px-6 md:px-12 lg:px-24">
+      <div className="max-w-7xl mx-auto flex flex-col md:flex-row gap-12 md:gap-16 items-start">
 
         <motion.div
           initial={{ opacity: 0, x: -50 }}
@@ -29,7 +29,7 @@ export default function Achievements({ onShowCertificate }: AchievementsProps) {
               Certifications & Achievements
             </h3>
           </div>
-          <h2 className="text-4xl md:text-5xl font-bold text-white tracking-tight leading-tight">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white tracking-tight leading-tight">
             Recognized for innovation and excellence.
           </h2>
         </motion.div>
@@ -39,32 +39,32 @@ export default function Achievements({ onShowCertificate }: AchievementsProps) {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.8, delay: 0.2 }}
-          className="md:w-2/3 flex flex-col gap-8 w-full"
+          className="md:w-2/3 flex flex-col gap-6 sm:gap-8 w-full"
         >
           {/* Unlox Hackathon */}
           <motion.div
             whileHover={isLowEnd ? {} : { scale: 1.02 }}
             transition={{ type: "spring", bounce: 0.25, duration: 0.6 }}
-            className={`relative border border-white/10 rounded-[2rem] p-8 md:p-12 transition-colors duration-500 group overflow-hidden ${isLowEnd ? 'bg-[#222]' : 'bg-white/5 backdrop-blur-md'}`}
+            className={`relative border border-white/10 rounded-[1.5rem] sm:rounded-[2rem] p-6 sm:p-8 md:p-12 transition-colors duration-500 group overflow-hidden ${isLowEnd ? 'bg-[#222]' : 'bg-white/5 backdrop-blur-md'}`}
           >
             {!isLowEnd && (
               <>
-                <div className="absolute inset-0 bg-gradient-to-br from-white/[0.07] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none rounded-[2rem]" />
+                <div className="absolute inset-0 bg-gradient-to-br from-white/[0.07] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none rounded-[1.5rem] sm:rounded-[2rem]" />
                 <div className="rotating-border-glow opacity-100" />
               </>
             )}
 
-            <div className="mb-6 flex flex-col md:flex-row md:justify-between md:items-baseline gap-2">
+            <div className="mb-6 flex flex-col sm:flex-row sm:justify-between sm:items-baseline gap-2">
               <div>
-                <h4 className="text-2xl font-bold text-white mb-1">1st Prize Winner</h4>
-                <p className="text-xl text-emerald-400 font-medium">Unlox Hackathon</p>
+                <h4 className="text-xl sm:text-2xl font-bold text-white mb-1">1st Prize Winner</h4>
+                <p className="text-lg sm:text-xl text-emerald-400 font-medium">Unlox Hackathon</p>
               </div>
-              <div className="text-white/60 text-sm font-mono bg-black/40 px-5 py-2.5 rounded-full inline-block border border-white/5 shadow-inner">
+              <div className="text-white/60 text-xs sm:text-sm font-mono bg-black/40 px-4 py-2 sm:px-5 sm:py-2.5 rounded-full inline-block border border-white/5 shadow-inner w-fit">
                 June 26, 2026
               </div>
             </div>
 
-            <p className="relative z-10 text-white/70 leading-relaxed mb-10 text-lg md:text-xl font-light">
+            <p className="relative z-10 text-white/70 leading-relaxed mb-8 sm:mb-10 text-base sm:text-lg md:text-xl font-light">
               Won first prize and a cash prize of ₹10,000 in the Hackathon conducted by Unlox in collaboration with the Department of Artificial Intelligence & Machine Learning (AIML) and Data Science (DS).
             </p>
 
@@ -73,7 +73,7 @@ export default function Achievements({ onShowCertificate }: AchievementsProps) {
               whileHover={isLowEnd ? {} : { scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               transition={{ type: "spring", bounce: 0.25, duration: 0.6 }}
-              className={`relative z-10 inline-flex items-center gap-3 px-8 py-4 text-white font-bold tracking-wide rounded-full overflow-hidden group ${isLowEnd ? 'bg-[#444]' : 'shadow-[0_0_20px_rgba(255,255,255,0.05)] hover:shadow-[0_0_30px_rgba(255,255,255,0.2)]'}`}
+              className={`relative z-10 inline-flex items-center justify-center gap-3 px-6 py-3.5 sm:px-8 sm:py-4 text-white font-bold tracking-wide rounded-full overflow-hidden group w-full sm:w-auto text-sm sm:text-base ${isLowEnd ? 'bg-[#444]' : 'shadow-[0_0_20px_rgba(255,255,255,0.05)] hover:shadow-[0_0_30px_rgba(255,255,255,0.2)]'}`}
               style={isLowEnd ? {} : {
                 background: "linear-gradient(135deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0.02) 100%)",
                 backdropFilter: "blur(12px)",
@@ -84,7 +84,55 @@ export default function Achievements({ onShowCertificate }: AchievementsProps) {
             >
               <span className={`flex items-center gap-3 ${isLowEnd ? '' : 'mix-blend-screen'}`}>
                 View Trophy
-                <ArrowUpRight className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1" />
+                <ArrowUpRight className="w-4 h-4 sm:w-5 sm:h-5 transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1" />
+              </span>
+            </motion.button>
+          </motion.div>
+
+          {/* PromptWars Hackathon */}
+          <motion.div
+            whileHover={isLowEnd ? {} : { scale: 1.02 }}
+            transition={{ type: "spring", bounce: 0.25, duration: 0.6 }}
+            className={`relative border border-white/10 rounded-[1.5rem] sm:rounded-[2rem] p-6 sm:p-8 md:p-12 transition-colors duration-500 group overflow-hidden ${isLowEnd ? 'bg-[#222]' : 'bg-white/5 backdrop-blur-md'}`}
+          >
+            {!isLowEnd && (
+              <>
+                <div className="absolute inset-0 bg-gradient-to-br from-white/[0.07] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none rounded-[1.5rem] sm:rounded-[2rem]" />
+                <div className="rotating-border-glow opacity-100" />
+              </>
+            )}
+
+            <div className="mb-6 flex flex-col sm:flex-row sm:justify-between sm:items-baseline gap-2">
+              <div>
+                <h4 className="text-xl sm:text-2xl font-bold text-white mb-1">Top 400 Leaderboard (40,000+ Participants)</h4>
+                <p className="text-lg sm:text-xl text-emerald-400 font-medium">PromptWars Virtual &bull; Google for Developers</p>
+              </div>
+              <div className="text-white/60 text-xs sm:text-sm font-mono bg-black/40 px-4 py-2 sm:px-5 sm:py-2.5 rounded-full inline-block border border-white/5 shadow-inner w-fit">
+                August 25, 2026
+              </div>
+            </div>
+
+            <p className="relative z-10 text-white/70 leading-relaxed mb-8 sm:mb-10 text-base sm:text-lg md:text-xl font-light">
+              Secured a definitive position in the Top 400 Leaderboard out of over 40,000+ global participants in PromptWars Virtual, organized by Google for Developers and Hack2Skill. Recognized for engineering functional, high-performance Generative AI solutions.
+            </p>
+
+            <motion.button
+              onClick={() => onShowCertificate('promptwars')}
+              whileHover={isLowEnd ? {} : { scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              transition={{ type: "spring", bounce: 0.25, duration: 0.6 }}
+              className={`relative z-10 inline-flex items-center justify-center gap-3 px-6 py-3.5 sm:px-8 sm:py-4 text-white font-bold tracking-wide rounded-full overflow-hidden group w-full sm:w-auto text-sm sm:text-base ${isLowEnd ? 'bg-[#444]' : 'shadow-[0_0_20px_rgba(255,255,255,0.05)] hover:shadow-[0_0_30px_rgba(255,255,255,0.2)]'}`}
+              style={isLowEnd ? {} : {
+                background: "linear-gradient(135deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0.02) 100%)",
+                backdropFilter: "blur(12px)",
+                WebkitBackdropFilter: "blur(12px)",
+                boxShadow: "inset 0px 2px 4px rgba(255,255,255,0.4), inset 0px -4px 8px rgba(0,0,0,0.1)",
+                border: "1px solid rgba(255,255,255,0.2)",
+              }}
+            >
+              <span className={`flex items-center gap-3 ${isLowEnd ? '' : 'mix-blend-screen'}`}>
+                Show Certificate
+                <ArrowUpRight className="w-4 h-4 sm:w-5 sm:h-5 transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1" />
               </span>
             </motion.button>
           </motion.div>
@@ -93,26 +141,26 @@ export default function Achievements({ onShowCertificate }: AchievementsProps) {
           <motion.div
             whileHover={isLowEnd ? {} : { scale: 1.02 }}
             transition={{ type: "spring", bounce: 0.25, duration: 0.6 }}
-            className={`relative border border-white/10 rounded-[2rem] p-8 md:p-12 transition-colors duration-500 group overflow-hidden ${isLowEnd ? 'bg-[#222]' : 'bg-white/5 backdrop-blur-md'}`}
+            className={`relative border border-white/10 rounded-[1.5rem] sm:rounded-[2rem] p-6 sm:p-8 md:p-12 transition-colors duration-500 group overflow-hidden ${isLowEnd ? 'bg-[#222]' : 'bg-white/5 backdrop-blur-md'}`}
           >
             {!isLowEnd && (
               <>
-                <div className="absolute inset-0 bg-gradient-to-br from-white/[0.07] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none rounded-[2rem]" />
+                <div className="absolute inset-0 bg-gradient-to-br from-white/[0.07] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none rounded-[1.5rem] sm:rounded-[2rem]" />
                 <div className="rotating-border-glow opacity-100" />
               </>
             )}
 
-            <div className="mb-6 flex flex-col md:flex-row md:justify-between md:items-baseline gap-2">
+            <div className="mb-6 flex flex-col sm:flex-row sm:justify-between sm:items-baseline gap-2">
               <div>
-                <h4 className="text-2xl font-bold text-white mb-1">Participant Recognition</h4>
-                <p className="text-xl text-emerald-400 font-medium">National YESummit 2026</p>
+                <h4 className="text-xl sm:text-2xl font-bold text-white mb-1">Participant Recognition</h4>
+                <p className="text-lg sm:text-xl text-emerald-400 font-medium">National YESummit 2026</p>
               </div>
-              <div className="text-white/60 text-sm font-mono bg-black/40 px-5 py-2.5 rounded-full inline-block border border-white/5 shadow-inner">
+              <div className="text-white/60 text-xs sm:text-sm font-mono bg-black/40 px-4 py-2 sm:px-5 sm:py-2.5 rounded-full inline-block border border-white/5 shadow-inner w-fit">
                 2026
               </div>
             </div>
 
-            <p className="relative z-10 text-white/70 leading-relaxed mb-10 text-lg md:text-xl font-light">
+            <p className="relative z-10 text-white/70 leading-relaxed mb-8 sm:mb-10 text-base sm:text-lg md:text-xl font-light">
               Participated in National YESummit 2026, engaging in entrepreneurship-focused sessions, networking, and collaborative innovation initiatives.
             </p>
 
@@ -121,7 +169,7 @@ export default function Achievements({ onShowCertificate }: AchievementsProps) {
               whileHover={isLowEnd ? {} : { scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               transition={{ type: "spring", bounce: 0.25, duration: 0.6 }}
-              className={`relative z-10 inline-flex items-center gap-3 px-8 py-4 text-white font-bold tracking-wide rounded-full overflow-hidden group ${isLowEnd ? 'bg-[#444]' : 'shadow-[0_0_20px_rgba(255,255,255,0.05)] hover:shadow-[0_0_30px_rgba(255,255,255,0.2)]'}`}
+              className={`relative z-10 inline-flex items-center justify-center gap-3 px-6 py-3.5 sm:px-8 sm:py-4 text-white font-bold tracking-wide rounded-full overflow-hidden group w-full sm:w-auto text-sm sm:text-base ${isLowEnd ? 'bg-[#444]' : 'shadow-[0_0_20px_rgba(255,255,255,0.05)] hover:shadow-[0_0_30px_rgba(255,255,255,0.2)]'}`}
               style={isLowEnd ? {} : {
                 background: "linear-gradient(135deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0.02) 100%)",
                 backdropFilter: "blur(12px)",
@@ -132,7 +180,7 @@ export default function Achievements({ onShowCertificate }: AchievementsProps) {
             >
               <span className={`flex items-center gap-3 ${isLowEnd ? '' : 'mix-blend-screen'}`}>
                 Show Certificate
-                <ArrowUpRight className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1" />
+                <ArrowUpRight className="w-4 h-4 sm:w-5 sm:h-5 transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1" />
               </span>
             </motion.button>
           </motion.div>
@@ -141,26 +189,26 @@ export default function Achievements({ onShowCertificate }: AchievementsProps) {
           <motion.div
             whileHover={isLowEnd ? {} : { scale: 1.02 }}
             transition={{ type: "spring", bounce: 0.25, duration: 0.6 }}
-            className={`relative border border-white/10 rounded-[2rem] p-8 md:p-12 transition-colors duration-500 group overflow-hidden ${isLowEnd ? 'bg-[#222]' : 'bg-white/5 backdrop-blur-md'}`}
+            className={`relative border border-white/10 rounded-[1.5rem] sm:rounded-[2rem] p-6 sm:p-8 md:p-12 transition-colors duration-500 group overflow-hidden ${isLowEnd ? 'bg-[#222]' : 'bg-white/5 backdrop-blur-md'}`}
           >
             {!isLowEnd && (
               <>
-                <div className="absolute inset-0 bg-gradient-to-br from-white/[0.07] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none rounded-[2rem]" />
+                <div className="absolute inset-0 bg-gradient-to-br from-white/[0.07] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none rounded-[1.5rem] sm:rounded-[2rem]" />
                 <div className="rotating-border-glow opacity-100" />
               </>
             )}
 
-            <div className="mb-6 flex flex-col md:flex-row md:justify-between md:items-baseline gap-2">
+            <div className="mb-6 flex flex-col sm:flex-row sm:justify-between sm:items-baseline gap-2">
               <div>
-                <h4 className="text-2xl font-bold text-white mb-1">Certificate of Achievement</h4>
-                <p className="text-xl text-emerald-400 font-medium">Karnataka State YESummit 2025</p>
+                <h4 className="text-xl sm:text-2xl font-bold text-white mb-1">Certificate of Achievement</h4>
+                <p className="text-lg sm:text-xl text-emerald-400 font-medium">Karnataka State YESummit 2025</p>
               </div>
-              <div className="text-white/60 text-sm font-mono bg-black/40 px-5 py-2.5 rounded-full inline-block border border-white/5 shadow-inner">
+              <div className="text-white/60 text-xs sm:text-sm font-mono bg-black/40 px-4 py-2 sm:px-5 sm:py-2.5 rounded-full inline-block border border-white/5 shadow-inner w-fit">
                 2025
               </div>
             </div>
 
-            <p className="relative z-10 text-white/70 leading-relaxed mb-10 text-lg md:text-xl font-light">
+            <p className="relative z-10 text-white/70 leading-relaxed mb-8 sm:mb-10 text-base sm:text-lg md:text-xl font-light">
               Participated in Karnataka State YESummit 2025 and was recognized for innovative thinking and active involvement in entrepreneurial discussions and activities.
             </p>
 
@@ -169,7 +217,7 @@ export default function Achievements({ onShowCertificate }: AchievementsProps) {
               whileHover={isLowEnd ? {} : { scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               transition={{ type: "spring", bounce: 0.25, duration: 0.6 }}
-              className={`relative z-10 inline-flex items-center gap-3 px-8 py-4 text-white font-bold tracking-wide rounded-full overflow-hidden group ${isLowEnd ? 'bg-[#444]' : 'shadow-[0_0_20px_rgba(255,255,255,0.05)] hover:shadow-[0_0_30px_rgba(255,255,255,0.2)]'}`}
+              className={`relative z-10 inline-flex items-center justify-center gap-3 px-6 py-3.5 sm:px-8 sm:py-4 text-white font-bold tracking-wide rounded-full overflow-hidden group w-full sm:w-auto text-sm sm:text-base ${isLowEnd ? 'bg-[#444]' : 'shadow-[0_0_20px_rgba(255,255,255,0.05)] hover:shadow-[0_0_30px_rgba(255,255,255,0.2)]'}`}
               style={isLowEnd ? {} : {
                 background: "linear-gradient(135deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0.02) 100%)",
                 backdropFilter: "blur(12px)",
@@ -180,7 +228,7 @@ export default function Achievements({ onShowCertificate }: AchievementsProps) {
             >
               <span className={`flex items-center gap-3 ${isLowEnd ? '' : 'mix-blend-screen'}`}>
                 Show Certificate
-                <ArrowUpRight className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1" />
+                <ArrowUpRight className="w-4 h-4 sm:w-5 sm:h-5 transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1" />
               </span>
             </motion.button>
           </motion.div>
