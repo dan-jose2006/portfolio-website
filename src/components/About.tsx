@@ -34,7 +34,7 @@ export default function About() {
         <motion.div
           initial={{ opacity: 0, x: -50 }}
           whileInView={{ opacity: 1, x: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
+          viewport={{ once: true, amount: 0.2 }}
           transition={{ duration: 0.8, ease: "easeOut" }}
           className="lg:w-1/3 flex flex-col items-start"
         >
@@ -55,7 +55,7 @@ export default function About() {
               key={card.title}
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-100px" }}
+              viewport={{ once: true, amount: 0.2 }}
               transition={{ duration: 0.6, delay: idx * 0.2, ease: "easeOut" }}
               whileHover={{ x: 10, backgroundColor: "rgba(255,255,255,0.05)" }}
               className="group relative p-8 rounded-3xl bg-[#1a1a1a] border border-white/5 transition-all duration-500 overflow-hidden"

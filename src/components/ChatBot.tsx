@@ -54,7 +54,7 @@ export default function ChatBot() {
           "Authorization": `Bearer ${process.env.NEXT_PUBLIC_GROQ_API_KEY}`
         },
         body: JSON.stringify({
-          model: "llama-3.3-70b-versatile",
+          model: "groq/compound-mini",
           messages: [
             {
               role: "system",

@@ -3,7 +3,6 @@
 import { useState } from "react";
 import Image from "next/image";
 import ScrollyCanvas from "@/components/ScrollyCanvas";
-import Overlay from "@/components/Overlay";
 import About from "@/components/About";
 import Skills from "@/components/Skills";
 import Projects from "@/components/Projects";
@@ -21,15 +20,12 @@ export default function Home() {
   const [certError, setCertError] = useState(false);
 
   return (
-    <main className="bg-transparent min-h-screen w-full max-w-full overflow-x-hidden selection:bg-emerald-400 selection:text-[#121212]">
+    <main className="bg-transparent min-h-screen w-full max-w-full selection:bg-emerald-400 selection:text-[#121212]">
       {/* Top Navigation */}
       <Navbar />
 
       {/* Scroll-Linked Animation Section */}
-      <section className="relative w-full overflow-hidden">
-        <ScrollyCanvas />
-        <Overlay />
-      </section>
+      <ScrollyCanvas />
 
       {/* About Section */}
       <About />

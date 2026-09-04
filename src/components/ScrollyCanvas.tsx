@@ -1,9 +1,11 @@
 "use client";
 
-import { useRef, useEffect, useState } from "react";
-import { useScroll, useTransform, useMotionValueEvent, motion, AnimatePresence } from "framer-motion";
+import { useRef, useEffect, useState, useCallback } from "react";
+import { useScroll, useTransform, useMotionValueEvent, motion, AnimatePresence, useSpring } from "framer-motion";
+import Overlay from "./Overlay";
 
 const FRAME_COUNT = 120;
+
 // Maps to the padded frame format: frame_000_delay-0.066s.jpg
 const getFramePath = (index: number) => {
   const paddedIndex = index.toString().padStart(3, "0");
@@ -13,7 +15,7 @@ const getFramePath = (index: number) => {
 export default function ScrollyCanvas() {
   const containerRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const [images, setImages] = useState<HTMLImageElement[]>([]);
+  const imagesRef = useRef<HTMLImageElement[]>([]);
   const [imagesLoaded, setImagesLoaded] = useState(0);
 
   const { scrollYProgress } = useScroll({
@@ -21,105 +23,111 @@ export default function ScrollyCanvas() {
     offset: ["start start", "end end"],
   });
 
+  // Smooth out the scroll progress to eliminate jaggedness from mouse wheels while staying responsive
+  const smoothProgress = useSpring(scrollYProgress, {
+    stiffness: 150,
+    damping: 35,
+    restDelta: 0.0005,
+  });
+
   // Map scroll progress (0-1) to frame index (0 to 119)
-  const currentIndex = useTransform(scrollYProgress, [0, 1], [0, FRAME_COUNT - 1]);
-
-  // Preload all frames
-  useEffect(() => {
-    const loadedImages: HTMLImageElement[] = [];
-    let loadedCount = 0;
-
-    for (let i = 0; i < FRAME_COUNT; i++) {
-      const img = new Image();
-      img.src = getFramePath(i);
-      img.onload = () => {
-        loadedCount++;
-        setImagesLoaded(loadedCount);
-      };
-      loadedImages.push(img);
-    }
-
-    // Use timeout to prevent synchronous setState inside useEffect warning
-    setTimeout(() => {
-      setImages(loadedImages);
-    }, 0);
-  }, []);
+  const currentIndex = useTransform(smoothProgress, [0, 1], [0, FRAME_COUNT - 1]);
 
   const lastDrawnIndex = useRef<number>(-1);
   const requestRef = useRef<number | null>(null);
 
   // Draw a specific frame to the canvas
-  const drawFrame = (index: number) => {
-    if (!canvasRef.current || images.length < FRAME_COUNT) return;
+  const drawFrame = useCallback(
+    (index: number) => {
+      if (!canvasRef.current || imagesRef.current.length < FRAME_COUNT) return;
 
-    const frameIndex = Math.floor(index);
-    // CRITICAL PERFORMANCE FIX: Do not redraw if the integer frame index hasn't changed.
-    // Framer motion fires hundreds of times for tiny float changes (e.g., 1.1, 1.2).
-    if (frameIndex === lastDrawnIndex.current) return;
-    lastDrawnIndex.current = frameIndex;
+      const frameIndex = Math.min(Math.max(0, Math.floor(index)), FRAME_COUNT - 1);
+      const img = imagesRef.current[frameIndex];
 
-    const canvas = canvasRef.current;
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
+      // Ensure the image is loaded before drawing
+      if (!img || !img.complete || img.naturalWidth === 0) return;
 
-    const isMobile = typeof window !== "undefined" && window.innerWidth < 768;
+      // Avoid redundant redraws when integer frame hasn't changed
+      if (frameIndex === lastDrawnIndex.current) return;
+      lastDrawnIndex.current = frameIndex;
 
-    if (!isMobile) {
-      // Enable 4K/High-res upscaling algorithms only on desktop
-      ctx.imageSmoothingEnabled = true;
-      ctx.imageSmoothingQuality = "high";
+      const canvas = canvasRef.current;
+      const ctx = canvas.getContext("2d");
+      if (!ctx) return;
 
-      // Filter is a massive performance killer on mobile CPUs, only apply on desktop
-      ctx.filter = "contrast(1.05) saturate(1.05)";
-    } else {
-      // Fast path for mobile
-      ctx.imageSmoothingEnabled = false;
-      ctx.filter = "none";
+      const isMobile = typeof window !== "undefined" && window.innerWidth < 768;
+
+      ctx.imageSmoothingEnabled = !isMobile;
+      if (!isMobile) {
+        ctx.imageSmoothingQuality = "high";
+      }
+
+      const canvasWidth = canvas.width;
+      const canvasHeight = canvas.height;
+      if (canvasWidth === 0 || canvasHeight === 0) return;
+
+      const imgWidth = img.naturalWidth || img.width;
+      const imgHeight = img.naturalHeight || img.height;
+
+      const scale = Math.max(canvasWidth / imgWidth, canvasHeight / imgHeight);
+      const x = canvasWidth / 2 - (imgWidth / 2) * scale;
+      const y = canvasHeight / 2 - (imgHeight / 2) * scale;
+
+      ctx.clearRect(0, 0, canvasWidth, canvasHeight);
+      ctx.drawImage(img, x, y, imgWidth * scale, imgHeight * scale);
+
+      // --- MASK THE VEO LOGO (BLENDED SMEAR TECHNIQUE FROM SOURCE IMAGE) ---
+      const maskWidth = 120;
+      const maskHeight = 60;
+      const logoX = imgWidth - maskWidth;
+      const logoY = imgHeight - maskHeight;
+
+      const renderX = x + logoX * scale;
+      const renderY = y + logoY * scale;
+      const renderW = maskWidth * scale;
+      const renderH = maskHeight * scale;
+
+      // Sample directly from source img to avoid canvas readback pipeline stalls
+      if (logoY > 1 && imgWidth > maskWidth) {
+        ctx.drawImage(
+          img,
+          logoX, logoY - 1, maskWidth, 1, // Source slice
+          renderX, renderY, renderW, renderH // Target destination over logo
+        );
+      }
+    },
+    []
+  );
+
+  // Preload all frames
+  useEffect(() => {
+    let isMounted = true;
+    const loadedImages: HTMLImageElement[] = new Array(FRAME_COUNT);
+
+    for (let i = 0; i < FRAME_COUNT; i++) {
+      const img = new Image();
+      img.src = getFramePath(i);
+      img.onload = () => {
+        if (!isMounted) return;
+        setImagesLoaded((prev) => prev + 1);
+      };
+      loadedImages[i] = img;
     }
 
-    const img = images[frameIndex];
-    if (!img) return;
+    imagesRef.current = loadedImages;
 
-    // Calculate aspect ratio covering the canvas (object-fit: cover)
-    const canvasWidth = canvas.width;
-    const canvasHeight = canvas.height;
-    const imgWidth = img.width;
-    const imgHeight = img.height;
+    return () => {
+      isMounted = false;
+    };
+  }, []);
 
-    const scale = Math.max(canvasWidth / imgWidth, canvasHeight / imgHeight);
-    const x = canvasWidth / 2 - (imgWidth / 2) * scale;
-    const y = canvasHeight / 2 - (imgHeight / 2) * scale;
-
-    ctx.clearRect(0, 0, canvasWidth, canvasHeight);
-    ctx.drawImage(img, x, y, imgWidth * scale, imgHeight * scale);
-
-    // --- MASK THE VEO LOGO (BLENDED SMEAR TECHNIQUE) ---
-    const maskWidth = 120;
-    const maskHeight = 60;
-    const paddingRight = 0;
-    const paddingBottom = 0;
-
-    const logoX = imgWidth - maskWidth - paddingRight;
-    const logoY = imgHeight - maskHeight - paddingBottom;
-
-    // Calculate exact rendered coordinates
-    const renderX = x + logoX * scale;
-    const renderY = y + logoY * scale;
-    const renderW = maskWidth * scale;
-    const renderH = maskHeight * scale;
-
-    // Grab a 1-pixel high horizontal slice from exactly ABOVE the logo
-    // and stretch it vertically over the logo area to seamlessly blend it.
-    // CRITICAL FIX: Disable this on mobile. Reading back from the canvas (`ctx.drawImage(canvas, ...)`) 
-    // causes massive GPU pipeline stalls on mobile devices, killing the framerate.
-    if (!isMobile && renderY > 0) {
-      ctx.drawImage(
-        canvas,
-        renderX, renderY - 1, renderW, 1, // Source: 1px slice just above
-        renderX, renderY, renderW, renderH // Destination: Over the logo
-      );
+  // Redraw as images finish loading so frame 0 and active frame are guaranteed to render
+  useEffect(() => {
+    if (imagesLoaded > 0) {
+      lastDrawnIndex.current = -1;
+      drawFrame(currentIndex.get());
     }
-  };
+  }, [imagesLoaded, drawFrame, currentIndex]);
 
   // Listen to scroll progress and redraw efficiently
   useMotionValueEvent(currentIndex, "change", (latest) => {
@@ -131,19 +139,22 @@ export default function ScrollyCanvas() {
     });
   });
 
-  // Handle window resize and initial drawing
+  // Handle window resize and layout updates
   useEffect(() => {
     const handleResize = () => {
       if (canvasRef.current) {
         const isMobile = window.innerWidth < 768;
-        // On mobile, render at DPR 1.0 to avoid mobile GPU memory stalls while preserving crispness
         const maxDpr = isMobile ? 1.0 : 2.0;
         const dpr = Math.min(window.devicePixelRatio || 1, maxDpr);
 
-        canvasRef.current.width = window.innerWidth * dpr;
-        canvasRef.current.height = window.innerHeight * dpr;
+        const newW = Math.floor(window.innerWidth * dpr);
+        const newH = Math.floor(window.innerHeight * dpr);
 
-        // Force redraw on resize
+        if (canvasRef.current.width !== newW || canvasRef.current.height !== newH) {
+          canvasRef.current.width = newW;
+          canvasRef.current.height = newH;
+        }
+
         lastDrawnIndex.current = -1;
         drawFrame(currentIndex.get());
       }
@@ -153,11 +164,10 @@ export default function ScrollyCanvas() {
     handleResize();
 
     return () => window.removeEventListener("resize", handleResize);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [imagesLoaded, images]);
+  }, [drawFrame, currentIndex]);
 
   return (
-    <div ref={containerRef} className="relative h-[500vh] w-full bg-[#121212]">
+    <div ref={containerRef} className="relative h-[300vh] w-full bg-[#121212]">
       <div className="sticky top-0 h-screen w-full overflow-hidden flex items-center justify-center">
         <AnimatePresence>
           {imagesLoaded < FRAME_COUNT && (
@@ -184,6 +194,7 @@ export default function ScrollyCanvas() {
           className="block w-full h-full object-cover"
           style={{ width: "100%", height: "100%" }}
         />
+        <Overlay scrollYProgress={smoothProgress} />
       </div>
     </div>
   );

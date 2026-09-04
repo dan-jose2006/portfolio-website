@@ -58,7 +58,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${geistSans.variable} ${geistMono.variable} antialiased`}
     >
       <head>
         <script
@@ -66,10 +66,10 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
       </head>
-      <body className="min-h-full w-full max-w-full overflow-x-hidden flex flex-col relative bg-[#121212]">
+      <body className="w-full relative bg-[#121212]">
         <PerformanceProvider>
           <Starfield />
-          <div className="relative z-10 flex flex-col flex-grow w-full max-w-full overflow-x-hidden">
+          <div className="relative z-10 w-full">
             {children}
           </div>
           <Analytics />
